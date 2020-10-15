@@ -64,13 +64,17 @@ function createDescriptionArray(number) {
   return descriptionArray;
 }
 
-function drawPicture(picturesArray) {
-  let pictures = document.querySelector(`.pictures`);
-
+// Создает объект из шаблона
+function createNode() {
   let pictureTemplate = document.querySelector(`#picture`).content.querySelector(`.picture`);
+  let picture = pictureTemplate.cloneNode(true);
+  return picture;
+}
 
-  for (let i = 0; i <= picturesArray.length; i++) {
-    let picture = pictureTemplate.cloneNode(true);
+function drawPicture(picturesArray) {
+  for (let i = 0; i <= picturesArray.length - 1; i++) {
+    let pictures = document.querySelector(`.pictures`);
+    let picture = createNode();
     let pictureImg = picture.querySelector(`img`);
     let pictureComments = picture.querySelector(`.picture__comments`);
     let pictureLikes = picture.querySelector(`.picture__likes`);
