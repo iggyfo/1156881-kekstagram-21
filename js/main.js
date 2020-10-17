@@ -49,10 +49,10 @@ function createDescriptionArray(number) {
 
     // Создаем массив объектов с комментариями
     let comments = [];
-    let commentsLength = getRandom(1, 6);
+    let numberOfComments = getRandom(1, 6);
 
     // Создаем массив коментов
-    for (let j = 0; j < commentsLength; j++) {
+    for (let j = 0; j < numberOfComments; j++) {
       comments.push({
         avatar: `img/avatar-` + getRandom(1, 6) + `.svg`,
         message: commentsMessage[getRandom(1, commentsMessage.length)],
