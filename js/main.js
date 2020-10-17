@@ -1,5 +1,8 @@
 'use strict';
 
+let pictureTemplate = document.querySelector(`#picture`).content.querySelector(`.picture`);
+let pictures = document.querySelector(`.pictures`);
+
 // Функция получения случайных целых числел
 function getRandom(min, max) {
   min = Math.ceil(min);
@@ -31,50 +34,41 @@ function createDescriptionArray(number) {
     `Катя`,
   ];
 
-  for (let i = 1; i < number + 1; i++) {
+  for (let i = 1; i <= number; i++) {
     // Создаем объект - описание фотографии, опубликованной пользователем
-    let photoDescription = {};
+    let photo = {};
 
     // Добавляем адрес картинки
-    const urlLink = `photos/` + i + `.jpg`;
-    photoDescription.url = urlLink;
+    photo.url = `photos/` + i + `.jpg`;
 
     // Добавляем описание картинки
-    const descriptionText = `Описание фотографии №` + i;
-    photoDescription.description = descriptionText;
+    photo.description = `Описание фотографии №` + i;
 
-    // Добовляем лайки
-    const numberOfLikes = getRandom(15, 200);
-    photoDescription.likes = numberOfLikes;
+    // Добавляем лайки
+    photo.likes = getRandom(15, 200);
 
     // Создаем массив объектов с комментариями
-    let commentsArray = [];
+    let comments = [];
+    let commentsLength = getRandom(1, 6);
 
     // Создаем массив коментов
-    for (let j = 0; j < getRandom(1, 6); j++) {
-      commentsArray.push({
+    for (let j = 0; j < commentsLength; j++) {
+      comments.push({
         avatar: `img/avatar-` + getRandom(1, 6) + `.svg`,
-        message: commentsMessage[getRandom(1, 6)],
-        name: namesMessage[getRandom(1, 8)],
+        message: commentsMessage[getRandom(1, commentsMessage.length)],
+        name: namesMessage[getRandom(1, namesMessage.length)],
       });
     }
-    photoDescription.comments = commentsArray;
-    descriptionArray.push(photoDescription);
+    photo.comments = comments;
+    descriptionArray.push(photo);
   }
   return descriptionArray;
 }
 
 // Создает объект из шаблона
-function createNode() {
-  let pictureTemplate = document.querySelector(`#picture`).content.querySelector(`.picture`);
-  let picture = pictureTemplate.cloneNode(true);
-  return picture;
-}
-
 function drawPicture(picturesArray) {
-  for (let i = 0; i <= picturesArray.length - 1; i++) {
-    let pictures = document.querySelector(`.pictures`);
-    let picture = createNode();
+  for (let i = 0; i < picturesArray.length; i++) {
+    let picture = pictureTemplate.cloneNode(true);
     let pictureImg = picture.querySelector(`img`);
     let pictureComments = picture.querySelector(`.picture__comments`);
     let pictureLikes = picture.querySelector(`.picture__likes`);
@@ -87,7 +81,3 @@ function drawPicture(picturesArray) {
 
 let descriptionArray = createDescriptionArray(25);
 drawPicture(descriptionArray);
-
-// функцию генерации случайных данных,
-// функцию создания DOM-элемента на основе JS-объекта,
-// функцию заполнения блока DOM-элементами на основе массива JS-объектов
