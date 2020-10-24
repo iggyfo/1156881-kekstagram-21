@@ -247,7 +247,6 @@ inputHashtag.addEventListener(`change`, () => {
 // Добавляем обработчик на поле ввода комментария
 inputComment.addEventListener(`change`, () => {
   inputComment.setCustomValidity(``);
-  console.log(inputComment.textLength);
   if (inputComment.textLength > MAX_NUM_COMMENTS) {
     inputComment.setCustomValidity(`Длина комментария должна быть не более ` + MAX_NUM_COMMENTS + ` символов`);
   }
