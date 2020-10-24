@@ -57,7 +57,7 @@ function createDescriptions(number) {
     for (let j = 0; j < numberOfComments; j++) {
       comments.push({
         avatar: `img/avatar-` + getRandom(1, 6) + `.svg`,
-        message: COMMENTS_MESSAGE[getRandom(1, COMMENTS_MESSAGE.length)],
+        message: COMMENTS_MESSAGE[getRandom(0, COMMENTS_MESSAGE.length - 1)],
         name: NAMES[getRandom(1, NAMES.length)],
       });
     }
@@ -84,170 +84,52 @@ function drawPicture(picturesArray) {
 const descriptionArray = createDescriptions(25);
 drawPicture(descriptionArray);
 
-
-// Загрузка фотографии и открытие формы -----------------------------------------------------
-
-// Открываем и закрываем модальное окно
-const uploadOverlay = document.querySelector(`.img-upload__overlay`);
+// module3-task2
+const CLASS_HIDDEN = `hidden`;
+const AVATAR_SIZE = 35;
 const body = document.querySelector(`body`);
-const uploadFile = document.querySelector(`#upload-file`);
-const uploadCancel = document.querySelector(`#upload-cancel`);
+const firstPhoto = descriptionArray[0];
+const bigPicture = document.querySelector(`.big-picture`);
+const photo = bigPicture.querySelector(`.big-picture__img img`);
+const likesCount = bigPicture.querySelector(`.likes-count`);
+const commentsCount = bigPicture.querySelector(`.comments-count`);
+const socialComments = bigPicture.querySelector(`.social__comments`);
+const socialCaption = bigPicture.querySelector(`.social__caption`);
+const socialCommentCount = bigPicture.querySelector(`.social__comment-count`);
+const commentsLoader = bigPicture.querySelector(`.comments-loader`);
 
+photo.src = firstPhoto.url;
+likesCount.textContent = firstPhoto.likes;
+commentsCount.textContent = firstPhoto.comments.length;
+socialCaption.textContent = firstPhoto.description;
 
-const showModal = () => {
-  body.classList.add(`modal-open`);
-  uploadOverlay.classList.remove(`hidden`);
-};
+socialCommentCount.classList.add(CLASS_HIDDEN);
+commentsLoader.classList.add(CLASS_HIDDEN);
+socialComments.replaceChildren();
 
-const closeModal = () => {
-  body.classList.remove(`modal-open`);
-  uploadOverlay.classList.add(`hidden`);
-};
+// Функция создения нового коментария
+const newComment = (comments) => {
+  comments.forEach((element) => {
+    const li = document.createElement(`li`);
+    li.classList.add(`social__comment`);
 
-uploadFile.addEventListener(`change`, () => {
-  showModal();
+    const img = document.createElement(`img`);
+    img.classList.add(`social__picture`);
+    img.src = element.avatar;
+    img.alt = element.name;
+    img.width = AVATAR_SIZE;
+    img.height = AVATAR_SIZE;
+    li.appendChild(img);
 
-  document.addEventListener(`keydown`, (evt) => {
-    // Дополнительно проверяем не является ли активными поля ввода хэштегов и комментариев.
-    // (по идее нужно получить состояние фокуса, но пока не понял как это реализовать)
-    if (evt.key === `Escape` && document.activeElement.name !== `hashtags` && document.activeElement.name !== `description`) {
-      closeModal();
-    }
-  });
-});
+    const p = document.createElement(`p`);
+    p.classList.add(`social__text`);
+    p.textContent = element.message;
+    li.appendChild(p);
 
-uploadCancel.addEventListener(`click`, () => {
-  closeModal();
-});
-
-// Изменяем маштаб изображения
-const scaleControlSmaller = document.querySelector(`.scale__control--smaller`);
-const scaleControlBigger = document.querySelector(`.scale__control--bigger`);
-const scaleControlValue = document.querySelector(`.scale__control--value`);
-const imgPreview = document.querySelector(`.img-upload__preview`);
-
-let currentScaleValue = parseInt(scaleControlValue.value, 10);
-imgPreview.style.transform = `scale(` + currentScaleValue / 100 + `)`;
-
-scaleControlSmaller.addEventListener(`click`, () => {
-  if (currentScaleValue !== 0) {
-    currentScaleValue -= 25;
-    scaleControlValue.value = String(currentScaleValue) + `%`;
-    imgPreview.style.transform = `scale(` + String(currentScaleValue / 100) + `)`;
-  }
-});
-
-scaleControlBigger.addEventListener(`click`, () => {
-  if (currentScaleValue !== 100) {
-    currentScaleValue += 25;
-    scaleControlValue.value = String(currentScaleValue) + `%`;
-    imgPreview.style.transform = `scale(` + String(currentScaleValue / 100) + `)`;
-  }
-});
-
-// Добавляем эфекты
-const effectsRadio = document.querySelectorAll(`.effects__radio`);
-const effectPin = document.querySelector(`.effect-level__pin`);
-const effectLevelValue = document.querySelector(`.effect-level__value`);
-
-// Функция устанавливающая эфекты добавляя стили картинке при отпускании пина
-const getFilterPinUp = (effect) => {
-  effectPin.addEventListener(`mouseup`, () => {
-    if (effect === `effect-none`) {
-      imgPreview.style.filter = `none`;
-    } else if (effect === `effect-chrome`) {
-      imgPreview.style.filter = `grayscale(` + String(effectLevelValue.value / 100) + `)`;
-    } else if (effect === `effect-sepia`) {
-      imgPreview.style.filter = `sepia(` + String(effectLevelValue.value / 100) + `)`;
-    } else if (effect === `effect-marvin`) {
-      imgPreview.style.filter = `invert(` + String(effectLevelValue.value) + `%)`;
-    } else if (effect === `effect-phobos`) {
-      imgPreview.style.filter = `blur(` + String(getEffectValue(effectLevelValue.value)) + `px)`;
-    } else if (effect === `effect-heat`) {
-      imgPreview.style.filter = `brightness(` + String(getEffectValue(effectLevelValue.value)) + `)`;
-    }
+    socialComments.appendChild(li);
   });
 };
 
-// Обработчик изменения типа накладываемого эфекта
-effectsRadio.forEach((element) => {
-  element.addEventListener(`change`, () => {
-    // При изменении фильтра задаем картинке класс и стили оригинального изображения
-    imgPreview.className = ``;
-    imgPreview.style.removeProperty(`filter`);
-
-    if (element.id === `effect-none`) {
-      imgPreview.className = ``;
-      getFilterPinUp(element.id);
-    } else if (element.id === `effect-chrome`) {
-      imgPreview.classList.add(`effects__preview--chrome`);
-      getFilterPinUp(element.id);
-    } else if (element.id === `effect-sepia`) {
-      imgPreview.classList.add(`effects__preview--sepia`);
-      getFilterPinUp(element.id);
-    } else if (element.id === `effect-marvin`) {
-      imgPreview.classList.add(`effects__preview--marvin`);
-      getFilterPinUp(element.id);
-    } else if (element.id === `effect-phobos`) {
-      imgPreview.classList.add(`effects__preview--phobos`);
-      getFilterPinUp(element.id);
-    } else if (element.id === `effect-heat`) {
-      imgPreview.classList.add(`effects__preview--heat`);
-      getFilterPinUp(element.id);
-    }
-  });
-});
-
-// Функция получает число от 1 до 100 и возвращает чисор от 1 до 3
-// Может как-то по другому преобразовывать???
-const getEffectValue = (value) => {
-  if (value <= 33) {
-    return 1;
-  } if (value >= 66) {
-    return 3;
-  } else {
-    return 2;
-  }
-};
-
-const inputHashtag = document.querySelector(`.text__hashtags`);
-const inputComment = document.querySelector(`.text__description`);
-const regex = /#[А-Яа-я]{2,20}/;
-const MAX_NUM_HASHTAGS = 5;
-const MAX_NUM_COMMENTS = 140;
-
-const getNumDublicate = (arr, element) => {
-  let countDublicate = 0;
-  arr.forEach((arrElem) => {
-    if (arrElem === element) {
-      countDublicate++;
-    }
-  });
-  return countDublicate;
-};
-
-// Добавляем обработчик на поле ввода хэштега
-inputHashtag.addEventListener(`change`, () => {
-  const hashTags = inputHashtag.value.split(` `);
-  inputHashtag.setCustomValidity(``);
-  if (hashTags.length > MAX_NUM_HASHTAGS) {
-    inputHashtag.setCustomValidity(`Максимальное количество хэштегов - не более пяти`);
-  }
-
-  hashTags.forEach((element) => {
-    if (getNumDublicate(hashTags, element) > 1) {
-      inputHashtag.setCustomValidity(`Хештеги не должны повторяться - удалите один из ` + element);
-    }
-    if (!regex.test(element)) {
-      inputHashtag.setCustomValidity(`Хештег ` + element + ` должен начинаться с решетки и состоять из кирилических букв`);
-    }
-  });
-});
-
-// Добавляем обработчик на поле ввода комментария
-inputComment.addEventListener(`change`, () => {
-  inputComment.setCustomValidity(``);
-  if (inputComment.textLength > MAX_NUM_COMMENTS) {
-    inputComment.setCustomValidity(`Длина комментария должна быть не более ` + MAX_NUM_COMMENTS + ` символов`);
-  }
-});
+newComment(firstPhoto.comments);
+body.classList.add(`modal-open`);
+bigPicture.classList.remove(`hidden`);
