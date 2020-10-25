@@ -84,11 +84,12 @@ function drawPicture(picturesArray) {
 const descriptionArray = createDescriptions(25);
 drawPicture(descriptionArray);
 
-// module3-task2
+// module3-task2 (Показываем первое фото пользователей с коментами)
+// module4-task2 (Показываем фото пользователей по клику на фото)
 const CLASS_HIDDEN = `hidden`;
 const AVATAR_SIZE = 35;
-const firstPhoto = descriptionArray[0];
 const bigPicture = document.querySelector(`.big-picture`);
+const bigPictureClose = bigPicture.querySelector(`.big-picture__cancel`);
 const photo = bigPicture.querySelector(`.big-picture__img img`);
 const likesCount = bigPicture.querySelector(`.likes-count`);
 const commentsCount = bigPicture.querySelector(`.comments-count`);
@@ -96,18 +97,10 @@ const socialComments = bigPicture.querySelector(`.social__comments`);
 const socialCaption = bigPicture.querySelector(`.social__caption`);
 const socialCommentCount = bigPicture.querySelector(`.social__comment-count`);
 const commentsLoader = bigPicture.querySelector(`.comments-loader`);
-
-photo.src = firstPhoto.url;
-likesCount.textContent = firstPhoto.likes;
-commentsCount.textContent = firstPhoto.comments.length;
-socialCaption.textContent = firstPhoto.description;
-
-socialCommentCount.classList.add(CLASS_HIDDEN);
-commentsLoader.classList.add(CLASS_HIDDEN);
-socialComments.replaceChildren();
+const allPictures = document.querySelectorAll(`.picture`);
 
 // Функция создения нового коментария
-const newComment = (comments) => {
+const createNewComments = (comments) => {
   comments.forEach((element) => {
     const li = document.createElement(`li`);
     li.classList.add(`social__comment`);
@@ -129,12 +122,46 @@ const newComment = (comments) => {
   });
 };
 
-newComment(firstPhoto.comments);
-document.body.classList.add(`modal-open`);
-bigPicture.classList.remove(`hidden`);
+const openBigPicture = () => {
+  document.body.classList.add(`modal-open`);
+  bigPicture.classList.remove(`hidden`);
+};
 
-// Загрузка фотографии и открытие формы -----------------------------------------------------
+const closeBigPicture = () => {
+  document.body.classList.remove(`modal-open`);
+  bigPicture.classList.add(`hidden`);
+};
 
+const createNewPhoto = (photoObj) => {
+  photo.src = photoObj.url;
+  likesCount.textContent = photoObj.likes;
+  commentsCount.textContent = photoObj.comments.length;
+  socialCaption.textContent = photoObj.description;
+
+  socialCommentCount.classList.add(CLASS_HIDDEN);
+  commentsLoader.classList.add(CLASS_HIDDEN);
+  socialComments.replaceChildren();
+
+  createNewComments(photoObj.comments);
+};
+
+for (let i = 0; i < allPictures.length; i++) {
+  allPictures[i].addEventListener(`click`, () => {
+    createNewPhoto(descriptionArray[i]);
+    openBigPicture();
+    bigPictureClose.addEventListener(`click`, () => {
+      closeBigPicture();
+    });
+
+    document.addEventListener(`keydown`, (evt) => {
+      if (evt.key === `Escape`) {
+        closeBigPicture();
+      }
+    });
+  });
+}
+
+// module4-task1 (Загрузка фото и валидация полей формы)
 // Открываем и закрываем модальное окно
 const uploadOverlay = document.querySelector(`.img-upload__overlay`);
 const uploadFile = document.querySelector(`#upload-file`);
@@ -156,7 +183,6 @@ uploadFile.addEventListener(`change`, () => {
 
   document.addEventListener(`keydown`, (evt) => {
     // Дополнительно проверяем не является ли активными поля ввода хэштегов и комментариев.
-    // (по идее нужно получить состояние фокуса, но пока не понял как это реализовать)
     if (evt.key === `Escape` && document.activeElement.name !== `hashtags` && document.activeElement.name !== `description`) {
       closeModal();
     }
@@ -230,25 +256,6 @@ effectsRadio.forEach((element) => {
     imgPreview.className = `img-upload__preview`;
     imgPreview.style.removeProperty(`filter`);
 
-    // if (element.id === `effect-none`) {
-    //   imgPreview.className = `img-upload__preview`;
-    //   getFilterPinUp(element.id);
-    // } else if (element.id === `effect-chrome`) {
-    //   imgPreview.classList.add(`effects__preview--chrome`);
-    //   getFilterPinUp(element.id);
-    // } else if (element.id === `effect-sepia`) {
-    //   imgPreview.classList.add(`effects__preview--sepia`);
-    //   getFilterPinUp(element.id);
-    // } else if (element.id === `effect-marvin`) {
-    //   imgPreview.classList.add(`effects__preview--marvin`);
-    //   getFilterPinUp(element.id);
-    // } else if (element.id === `effect-phobos`) {
-    //   imgPreview.classList.add(`effects__preview--phobos`);
-    //   getFilterPinUp(element.id);
-    // } else if (element.id === `effect-heat`) {
-    //   imgPreview.classList.add(`effects__preview--heat`);
-    //   getFilterPinUp(element.id);
-    // }
     switch (element.id) {
       case `effect-none`:
         imgPreview.className = `img-upload__preview`;
@@ -346,4 +353,3 @@ inputComment.addEventListener(`input`, () => {
     inputComment.setCustomValidity(`Длина комментария должна быть не более ` + MAX_NUM_COMMENTS + ` символов`);
   }
 });
-
