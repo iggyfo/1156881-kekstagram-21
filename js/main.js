@@ -130,8 +130,8 @@ const newComment = (comments) => {
 };
 
 newComment(firstPhoto.comments);
-// document.body.classList.add(`modal-open`);
-// bigPicture.classList.remove(`hidden`);
+document.body.classList.add(`modal-open`);
+bigPicture.classList.remove(`hidden`);
 
 // Загрузка фотографии и открытие формы -----------------------------------------------------
 
@@ -200,23 +200,23 @@ const effectLevelValue = document.querySelector(`.effect-level__value`);
 // Функция устанавливающая эфекты добавляя стили картинке при отпускании пина
 const getFilterPinUp = (effect) => {
   effectPin.addEventListener(`mouseup`, () => {
-    switch (true) {
-      case (effect === `effect-none`):
+    switch (effect) {
+      case `effect-none`:
         imgPreview.style.filter = `none`;
         break;
-      case (effect === `effect-chrome`):
+      case `effect-chrome`:
         imgPreview.style.filter = `grayscale(` + effectLevelValue.value / 100 + `)`;
         break;
-      case (effect === `effect-sepia`):
+      case `effect-sepia`:
         imgPreview.style.filter = `sepia(` + effectLevelValue.value / 100 + `)`;
         break;
-      case (effect === `effect-marvin`):
+      case `effect-marvin`:
         imgPreview.style.filter = `invert(` + effectLevelValue.value + `%)`;
         break;
-      case (effect === `effect-phobos`):
+      case `effect-phobos`:
         imgPreview.style.filter = `blur(` + getEffectValue(effectLevelValue.value) + `px)`;
         break;
-      case (effect === `effect-heat`):
+      case `effect-heat`:
         imgPreview.style.filter = `brightness(` + getEffectValue(effectLevelValue.value) + `)`;
         break;
     }
@@ -249,28 +249,28 @@ effectsRadio.forEach((element) => {
     //   imgPreview.classList.add(`effects__preview--heat`);
     //   getFilterPinUp(element.id);
     // }
-    switch (true) {
-      case (element.id === `effect-none`):
+    switch (element.id) {
+      case `effect-none`:
         imgPreview.className = `img-upload__preview`;
         getFilterPinUp(element.id);
         break;
-      case (element.id === `effect-chrome`):
+      case `effect-chrome`:
         imgPreview.classList.add(`effects__preview--chrome`);
         getFilterPinUp(element.id);
         break;
-      case (element.id === `effect-sepia`):
+      case `effect-sepia`:
         imgPreview.classList.add(`effects__preview--sepia`);
         getFilterPinUp(element.id);
         break;
-      case (element.id === `effect-marvin`):
+      case `effect-marvin`:
         imgPreview.classList.add(`effects__preview--marvin`);
         getFilterPinUp(element.id);
         break;
-      case (element.id === `effect-phobos`):
+      case `effect-phobos`:
         imgPreview.classList.add(`effects__preview--phobos`);
         getFilterPinUp(element.id);
         break;
-      case (element.id === `effect-heat`):
+      case `effect-heat`:
         imgPreview.classList.add(`effects__preview--heat`);
         getFilterPinUp(element.id);
         break;
@@ -296,7 +296,7 @@ const getEffectValue = (value) => {
 
 const inputHashtag = document.querySelector(`.text__hashtags`);
 const inputComment = document.querySelector(`.text__description`);
-const regex = /#[А-Яа-яA-Za-z0-9]{2,19}/g;
+const regex = /^#[А-Яа-яA-Za-z0-9]{2,19}$/;
 const MAX_NUM_HASHTAGS = 5;
 const MAX_NUM_COMMENTS = 140;
 const MAX_NUM_CHAR = 20;
@@ -317,22 +317,26 @@ inputHashtag.addEventListener(`input`, () => {
   inputHashtag.setCustomValidity(``);
   if (hashTags.length > MAX_NUM_HASHTAGS) {
     inputHashtag.setCustomValidity(`Максимальное количество хэштегов - не более пяти`);
+    return false;
   }
 
-  hashTags.forEach((element) => {
+  for (let i = 0; i < hashTags.length; i++) {
     // Проверяем на максимальное количество знаков
-    if (element.length > MAX_NUM_CHAR) {
-      inputHashtag.setCustomValidity(`Максимальное количество знаков в хэштеге - не более 20 ` + element);
+    if (hashTags[i].length > MAX_NUM_CHAR) {
+      inputHashtag.setCustomValidity(`Максимальное количество знаков в хэштеге - не более 20 ` + hashTags[i]);
+      return false;
     }
     // Проверяем есть ли повторяющиеся хэштеги
-    if (getNumDublicate(hashTags, element) > 1) {
-      inputHashtag.setCustomValidity(`Хештеги не должны повторяться - удалите один из ` + element);
+    if (getNumDublicate(hashTags, hashTags[i]) > 1) {
+      inputHashtag.setCustomValidity(`Хештеги не должны повторяться - удалите один из ` + hashTags[i]);
+      return false;
     }
     // Проверяем содержание хэштега
-    if (!regex.test(element)) {
-      inputHashtag.setCustomValidity(`Хештег ` + element + ` должен начинаться с # и состоять из букв/цифр`);
+    if (!regex.test(hashTags[i])) {
+      inputHashtag.setCustomValidity(`Хештег ` + hashTags[i] + ` должен начинаться с # и состоять из букв/цифр`);
+      return false;
     }
-  });
+  }
 });
 
 // Добавляем обработчик на поле ввода комментария
