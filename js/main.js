@@ -57,7 +57,7 @@ function createDescriptions(number) {
     for (let j = 0; j < numberOfComments; j++) {
       comments.push({
         avatar: `img/avatar-` + getRandom(1, 6) + `.svg`,
-        message: COMMENTS_MESSAGE[getRandom(1, COMMENTS_MESSAGE.length)],
+        message: COMMENTS_MESSAGE[getRandom(0, COMMENTS_MESSAGE.length - 1)],
         name: NAMES[getRandom(1, NAMES.length)],
       });
     }
@@ -84,23 +84,70 @@ function drawPicture(picturesArray) {
 const descriptionArray = createDescriptions(25);
 drawPicture(descriptionArray);
 
+// module3-task2
+const CLASS_HIDDEN = `hidden`;
+const AVATAR_SIZE = 35;
+const firstPhoto = descriptionArray[0];
+const bigPicture = document.querySelector(`.big-picture`);
+const photo = bigPicture.querySelector(`.big-picture__img img`);
+const likesCount = bigPicture.querySelector(`.likes-count`);
+const commentsCount = bigPicture.querySelector(`.comments-count`);
+const socialComments = bigPicture.querySelector(`.social__comments`);
+const socialCaption = bigPicture.querySelector(`.social__caption`);
+const socialCommentCount = bigPicture.querySelector(`.social__comment-count`);
+const commentsLoader = bigPicture.querySelector(`.comments-loader`);
+
+photo.src = firstPhoto.url;
+likesCount.textContent = firstPhoto.likes;
+commentsCount.textContent = firstPhoto.comments.length;
+socialCaption.textContent = firstPhoto.description;
+
+socialCommentCount.classList.add(CLASS_HIDDEN);
+commentsLoader.classList.add(CLASS_HIDDEN);
+socialComments.replaceChildren();
+
+// Функция создения нового коментария
+const newComment = (comments) => {
+  comments.forEach((element) => {
+    const li = document.createElement(`li`);
+    li.classList.add(`social__comment`);
+
+    const img = document.createElement(`img`);
+    img.classList.add(`social__picture`);
+    img.src = element.avatar;
+    img.alt = element.name;
+    img.width = AVATAR_SIZE;
+    img.height = AVATAR_SIZE;
+    li.appendChild(img);
+
+    const p = document.createElement(`p`);
+    p.classList.add(`social__text`);
+    p.textContent = element.message;
+    li.appendChild(p);
+
+    socialComments.appendChild(li);
+  });
+};
+
+newComment(firstPhoto.comments);
+document.body.classList.add(`modal-open`);
+bigPicture.classList.remove(`hidden`);
 
 // Загрузка фотографии и открытие формы -----------------------------------------------------
 
 // Открываем и закрываем модальное окно
 const uploadOverlay = document.querySelector(`.img-upload__overlay`);
-const body = document.querySelector(`body`);
 const uploadFile = document.querySelector(`#upload-file`);
 const uploadCancel = document.querySelector(`#upload-cancel`);
 
 
 const showModal = () => {
-  body.classList.add(`modal-open`);
+  document.body.classList.add(`modal-open`);
   uploadOverlay.classList.remove(`hidden`);
 };
 
 const closeModal = () => {
-  body.classList.remove(`modal-open`);
+  document.body.classList.remove(`modal-open`);
   uploadOverlay.classList.add(`hidden`);
 };
 
@@ -153,18 +200,25 @@ const effectLevelValue = document.querySelector(`.effect-level__value`);
 // Функция устанавливающая эфекты добавляя стили картинке при отпускании пина
 const getFilterPinUp = (effect) => {
   effectPin.addEventListener(`mouseup`, () => {
-    if (effect === `effect-none`) {
-      imgPreview.style.filter = `none`;
-    } else if (effect === `effect-chrome`) {
-      imgPreview.style.filter = `grayscale(` + String(effectLevelValue.value / 100) + `)`;
-    } else if (effect === `effect-sepia`) {
-      imgPreview.style.filter = `sepia(` + String(effectLevelValue.value / 100) + `)`;
-    } else if (effect === `effect-marvin`) {
-      imgPreview.style.filter = `invert(` + String(effectLevelValue.value) + `%)`;
-    } else if (effect === `effect-phobos`) {
-      imgPreview.style.filter = `blur(` + String(getEffectValue(effectLevelValue.value)) + `px)`;
-    } else if (effect === `effect-heat`) {
-      imgPreview.style.filter = `brightness(` + String(getEffectValue(effectLevelValue.value)) + `)`;
+    switch (effect) {
+      case `effect-none`:
+        imgPreview.style.filter = `none`;
+        break;
+      case `effect-chrome`:
+        imgPreview.style.filter = `grayscale(` + effectLevelValue.value / 100 + `)`;
+        break;
+      case `effect-sepia`:
+        imgPreview.style.filter = `sepia(` + effectLevelValue.value / 100 + `)`;
+        break;
+      case `effect-marvin`:
+        imgPreview.style.filter = `invert(` + effectLevelValue.value + `%)`;
+        break;
+      case `effect-phobos`:
+        imgPreview.style.filter = `blur(` + getEffectValue(effectLevelValue.value) + `px)`;
+        break;
+      case `effect-heat`:
+        imgPreview.style.filter = `brightness(` + getEffectValue(effectLevelValue.value) + `)`;
+        break;
     }
   });
 };
@@ -173,48 +227,79 @@ const getFilterPinUp = (effect) => {
 effectsRadio.forEach((element) => {
   element.addEventListener(`change`, () => {
     // При изменении фильтра задаем картинке класс и стили оригинального изображения
-    imgPreview.className = ``;
+    imgPreview.className = `img-upload__preview`;
     imgPreview.style.removeProperty(`filter`);
 
-    if (element.id === `effect-none`) {
-      imgPreview.className = ``;
-      getFilterPinUp(element.id);
-    } else if (element.id === `effect-chrome`) {
-      imgPreview.classList.add(`effects__preview--chrome`);
-      getFilterPinUp(element.id);
-    } else if (element.id === `effect-sepia`) {
-      imgPreview.classList.add(`effects__preview--sepia`);
-      getFilterPinUp(element.id);
-    } else if (element.id === `effect-marvin`) {
-      imgPreview.classList.add(`effects__preview--marvin`);
-      getFilterPinUp(element.id);
-    } else if (element.id === `effect-phobos`) {
-      imgPreview.classList.add(`effects__preview--phobos`);
-      getFilterPinUp(element.id);
-    } else if (element.id === `effect-heat`) {
-      imgPreview.classList.add(`effects__preview--heat`);
-      getFilterPinUp(element.id);
+    // if (element.id === `effect-none`) {
+    //   imgPreview.className = `img-upload__preview`;
+    //   getFilterPinUp(element.id);
+    // } else if (element.id === `effect-chrome`) {
+    //   imgPreview.classList.add(`effects__preview--chrome`);
+    //   getFilterPinUp(element.id);
+    // } else if (element.id === `effect-sepia`) {
+    //   imgPreview.classList.add(`effects__preview--sepia`);
+    //   getFilterPinUp(element.id);
+    // } else if (element.id === `effect-marvin`) {
+    //   imgPreview.classList.add(`effects__preview--marvin`);
+    //   getFilterPinUp(element.id);
+    // } else if (element.id === `effect-phobos`) {
+    //   imgPreview.classList.add(`effects__preview--phobos`);
+    //   getFilterPinUp(element.id);
+    // } else if (element.id === `effect-heat`) {
+    //   imgPreview.classList.add(`effects__preview--heat`);
+    //   getFilterPinUp(element.id);
+    // }
+    switch (element.id) {
+      case `effect-none`:
+        imgPreview.className = `img-upload__preview`;
+        getFilterPinUp(element.id);
+        break;
+      case `effect-chrome`:
+        imgPreview.classList.add(`effects__preview--chrome`);
+        getFilterPinUp(element.id);
+        break;
+      case `effect-sepia`:
+        imgPreview.classList.add(`effects__preview--sepia`);
+        getFilterPinUp(element.id);
+        break;
+      case `effect-marvin`:
+        imgPreview.classList.add(`effects__preview--marvin`);
+        getFilterPinUp(element.id);
+        break;
+      case `effect-phobos`:
+        imgPreview.classList.add(`effects__preview--phobos`);
+        getFilterPinUp(element.id);
+        break;
+      case `effect-heat`:
+        imgPreview.classList.add(`effects__preview--heat`);
+        getFilterPinUp(element.id);
+        break;
     }
   });
 });
 
-// Функция получает число от 1 до 100 и возвращает чисор от 1 до 3
-// Может как-то по другому преобразовывать???
+// Функция получает число от 1 до 100 и возвращает число от 1 до 3
 const getEffectValue = (value) => {
-  if (value <= 33) {
-    return 1;
-  } if (value >= 66) {
-    return 3;
-  } else {
-    return 2;
+  let ratio;
+  switch (true) {
+    case (value <= 33):
+      ratio = 1;
+      break;
+    case (value >= 66):
+      ratio = 3;
+      break;
+    default:
+      ratio = 2;
   }
+  return ratio;
 };
 
 const inputHashtag = document.querySelector(`.text__hashtags`);
 const inputComment = document.querySelector(`.text__description`);
-const regex = /#[А-Яа-я]{2,20}/;
+const regex = /^#[А-Яа-яA-Za-z0-9]{2,19}$/;
 const MAX_NUM_HASHTAGS = 5;
 const MAX_NUM_COMMENTS = 140;
+const MAX_NUM_CHAR = 20;
 
 const getNumDublicate = (arr, element) => {
   let countDublicate = 0;
@@ -227,27 +312,38 @@ const getNumDublicate = (arr, element) => {
 };
 
 // Добавляем обработчик на поле ввода хэштега
-inputHashtag.addEventListener(`change`, () => {
+inputHashtag.addEventListener(`input`, () => {
   const hashTags = inputHashtag.value.split(` `);
   inputHashtag.setCustomValidity(``);
   if (hashTags.length > MAX_NUM_HASHTAGS) {
     inputHashtag.setCustomValidity(`Максимальное количество хэштегов - не более пяти`);
+    return;
   }
 
-  hashTags.forEach((element) => {
-    if (getNumDublicate(hashTags, element) > 1) {
-      inputHashtag.setCustomValidity(`Хештеги не должны повторяться - удалите один из ` + element);
+  for (let tag of hashTags) {
+    // Проверяем на максимальное количество знаков
+    if (tag.length > MAX_NUM_CHAR) {
+      inputHashtag.setCustomValidity(`Максимальное количество знаков в хэштеге - не более 20 ` + tag);
+      return;
     }
-    if (!regex.test(element)) {
-      inputHashtag.setCustomValidity(`Хештег ` + element + ` должен начинаться с решетки и состоять из кирилических букв`);
+    // Проверяем есть ли повторяющиеся хэштеги
+    if (getNumDublicate(hashTags, tag) > 1) {
+      inputHashtag.setCustomValidity(`Хештеги не должны повторяться - удалите один из ` + tag);
+      return;
     }
-  });
+    // Проверяем содержание хэштега
+    if (!regex.test(tag)) {
+      inputHashtag.setCustomValidity(`Хештег ` + tag + ` должен начинаться с # и состоять из букв/цифр`);
+      return;
+    }
+  }
 });
 
 // Добавляем обработчик на поле ввода комментария
-inputComment.addEventListener(`change`, () => {
+inputComment.addEventListener(`input`, () => {
   inputComment.setCustomValidity(``);
   if (inputComment.textLength > MAX_NUM_COMMENTS) {
     inputComment.setCustomValidity(`Длина комментария должна быть не более ` + MAX_NUM_COMMENTS + ` символов`);
   }
 });
+
