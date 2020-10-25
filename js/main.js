@@ -317,24 +317,24 @@ inputHashtag.addEventListener(`input`, () => {
   inputHashtag.setCustomValidity(``);
   if (hashTags.length > MAX_NUM_HASHTAGS) {
     inputHashtag.setCustomValidity(`Максимальное количество хэштегов - не более пяти`);
-    return false;
+    return;
   }
 
-  for (let i = 0; i < hashTags.length; i++) {
+  for (let tag of hashTags) {
     // Проверяем на максимальное количество знаков
-    if (hashTags[i].length > MAX_NUM_CHAR) {
-      inputHashtag.setCustomValidity(`Максимальное количество знаков в хэштеге - не более 20 ` + hashTags[i]);
-      return false;
+    if (tag.length > MAX_NUM_CHAR) {
+      inputHashtag.setCustomValidity(`Максимальное количество знаков в хэштеге - не более 20 ` + tag);
+      return;
     }
     // Проверяем есть ли повторяющиеся хэштеги
-    if (getNumDublicate(hashTags, hashTags[i]) > 1) {
-      inputHashtag.setCustomValidity(`Хештеги не должны повторяться - удалите один из ` + hashTags[i]);
-      return false;
+    if (getNumDublicate(hashTags, tag) > 1) {
+      inputHashtag.setCustomValidity(`Хештеги не должны повторяться - удалите один из ` + tag);
+      return;
     }
     // Проверяем содержание хэштега
-    if (!regex.test(hashTags[i])) {
-      inputHashtag.setCustomValidity(`Хештег ` + hashTags[i] + ` должен начинаться с # и состоять из букв/цифр`);
-      return false;
+    if (!regex.test(tag)) {
+      inputHashtag.setCustomValidity(`Хештег ` + tag + ` должен начинаться с # и состоять из букв/цифр`);
+      return;
     }
   }
 });
