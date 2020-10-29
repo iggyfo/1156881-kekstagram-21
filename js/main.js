@@ -102,6 +102,7 @@ const allPictures = document.querySelectorAll(`.picture`);
 // Функция создения нового коментария
 const createNewComments = (comments) => {
   comments.forEach((element) => {
+    const fragment = document.createDocumentFragment();
     const li = document.createElement(`li`);
     li.classList.add(`social__comment`);
 
@@ -117,14 +118,15 @@ const createNewComments = (comments) => {
     p.classList.add(`social__text`);
     p.textContent = element.message;
     li.appendChild(p);
-
-    socialComments.appendChild(li);
+    fragment.appendChild(li);
+    socialComments.appendChild(fragment);
   });
 };
 
 const openBigPicture = () => {
   document.body.classList.add(`modal-open`);
   bigPicture.classList.remove(`hidden`);
+  document.addEventListener(`keydown`, isEscEvent);
 };
 
 const closeBigPicture = () => {
@@ -140,26 +142,28 @@ const createNewPhoto = (photoObj) => {
 
   socialCommentCount.classList.add(CLASS_HIDDEN);
   commentsLoader.classList.add(CLASS_HIDDEN);
-  socialComments.replaceChildren();
-
+  while (socialComments.firstChild) {
+    socialComments.removeChild(socialComments.firstChild);
+  }
   createNewComments(photoObj.comments);
 };
 
-for (let i = 0; i < allPictures.length; i++) {
-  allPictures[i].addEventListener(`click`, () => {
-    createNewPhoto(descriptionArray[i]);
+const isEscEvent = (evt) => {
+  if (evt.key === `Escape`) {
+    closeBigPicture();
+    document.removeEventListener(`keydown`, isEscEvent);
+  }
+};
+
+allPictures.forEach((element, index) => {
+  element.addEventListener(`click`, () => {
+    createNewPhoto(descriptionArray[index]);
     openBigPicture();
     bigPictureClose.addEventListener(`click`, () => {
       closeBigPicture();
     });
-
-    document.addEventListener(`keydown`, (evt) => {
-      if (evt.key === `Escape`) {
-        closeBigPicture();
-      }
-    });
   });
-}
+});
 
 // module4-task1 (Загрузка фото и валидация полей формы)
 // Открываем и закрываем модальное окно
