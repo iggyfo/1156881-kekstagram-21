@@ -126,12 +126,17 @@ const createNewComments = (comments) => {
 const openBigPicture = () => {
   document.body.classList.add(`modal-open`);
   bigPicture.classList.remove(`hidden`);
-  document.addEventListener(`keydown`, isEscEvent);
+  bigPictureClose.addEventListener(`click`, closeBigPicture);
+  document.addEventListener(`keydown`, closeBigPicture);
 };
 
-const closeBigPicture = () => {
-  document.body.classList.remove(`modal-open`);
-  bigPicture.classList.add(`hidden`);
+const closeBigPicture = (evt) => {
+  if (evt.key === `Escape` || evt.type === `click`) {
+    document.body.classList.remove(`modal-open`);
+    bigPicture.classList.add(`hidden`);
+    bigPictureClose.removeEventListener(`click`, closeBigPicture);
+    document.removeEventListener(`keydown`, closeBigPicture);
+  }
 };
 
 const createNewPhoto = (photoObj) => {
@@ -148,20 +153,10 @@ const createNewPhoto = (photoObj) => {
   createNewComments(photoObj.comments);
 };
 
-const isEscEvent = (evt) => {
-  if (evt.key === `Escape`) {
-    closeBigPicture();
-    document.removeEventListener(`keydown`, isEscEvent);
-  }
-};
-
 allPictures.forEach((element, index) => {
   element.addEventListener(`click`, () => {
     createNewPhoto(descriptionArray[index]);
     openBigPicture();
-    bigPictureClose.addEventListener(`click`, () => {
-      closeBigPicture();
-    });
   });
 });
 
