@@ -53,33 +53,75 @@
   // Добавляем эфекты
   const effectsRadio = document.querySelectorAll(`.effects__radio`);
   const effectPin = document.querySelector(`.effect-level__pin`);
-  const effectLevelValue = document.querySelector(`.effect-level__value`);
+  const effectLeveldepth = document.querySelector(`.effect-level__depth`);
 
-  // Функция устанавливающая эфекты добавляя стили картинке при отпускании пина
-  const getFilterPinUp = (effect) => {
-    effectPin.addEventListener(`mouseup`, () => {
-      switch (effect) {
-        case `effect-none`:
-          imgPreview.style.filter = `none`;
-          break;
-        case `effect-chrome`:
-          imgPreview.style.filter = `grayscale(` + effectLevelValue.value / 100 + `)`;
-          break;
-        case `effect-sepia`:
-          imgPreview.style.filter = `sepia(` + effectLevelValue.value / 100 + `)`;
-          break;
-        case `effect-marvin`:
-          imgPreview.style.filter = `invert(` + effectLevelValue.value + `%)`;
-          break;
-        case `effect-phobos`:
-          imgPreview.style.filter = `blur(` + getEffectValue(effectLevelValue.value) + `px)`;
-          break;
-        case `effect-heat`:
-          imgPreview.style.filter = `brightness(` + getEffectValue(effectLevelValue.value) + `)`;
-          break;
-      }
+
+  // const effectLevelValue = document.querySelector(`.effect-level__value`);
+
+  const onMouseDown = () => {
+    effectPin.addEventListener(`mousedown`, (downEvt) => {
+      downEvt.preventDefault();
+      // Rонстанта перемещаения на 1%
+      const VALUE_OF_ONE_SHIFT = 4.53;
+
+      // Получаем начальную координату Х
+      let startCoords = downEvt.clientX;
+
+      const onMouseMove = (moveEvt) => {
+        moveEvt.preventDefault();
+        // Вычисляем разницу между начальной и текущей координатой Х
+        let shift = startCoords - moveEvt.clientX;
+        // Перезаписываем начальную координату Х
+        startCoords = moveEvt.clientX;
+        // Переменная для применения стилей
+        let pinValue = (effectPin.offsetLeft - shift) / VALUE_OF_ONE_SHIFT;
+
+        if (pinValue >= 100) {
+          pinValue = 100;
+        } else if (pinValue <= 0) {
+          pinValue = 0;
+        }
+        effectPin.style.pinValue = pinValue + `%`;
+        effectLeveldepth.style.width = pinValue + `%`;
+      };
+
+      const onMouseUp = (upEvt) => {
+        upEvt.preventDefault();
+
+        document.removeEventListener(`mousemove`, onMouseMove);
+        document.removeEventListener(`mouseup`, onMouseUp);
+      };
+      document.addEventListener(`mousemove`, onMouseMove);
+      document.addEventListener(`mouseup`, onMouseUp);
     });
   };
+  onMouseDown();
+
+  // // Функция устанавливающая эфекты добавляя стили картинке при отпускании пина
+  // const getFilterPinUp = (effect) => {
+  //   effectPin.addEventListener(`mouseup`, () => {
+  //     switch (effect) {
+  //       case `effect-none`:
+  //         imgPreview.style.filter = `none`;
+  //         break;
+  //       case `effect-chrome`:
+  //         imgPreview.style.filter = `grayscale(` + effectLevelValue.value / 100 + `)`;
+  //         break;
+  //       case `effect-sepia`:
+  //         imgPreview.style.filter = `sepia(` + effectLevelValue.value / 100 + `)`;
+  //         break;
+  //       case `effect-marvin`:
+  //         imgPreview.style.filter = `invert(` + effectLevelValue.value + `%)`;
+  //         break;
+  //       case `effect-phobos`:
+  //         imgPreview.style.filter = `blur(` + getEffectValue(effectLevelValue.value) + `px)`;
+  //         break;
+  //       case `effect-heat`:
+  //         imgPreview.style.filter = `brightness(` + getEffectValue(effectLevelValue.value) + `)`;
+  //         break;
+  //     }
+  //   });
+  // };
 
   // Обработчик изменения типа накладываемого эфекта
   effectsRadio.forEach((element) => {
@@ -91,47 +133,41 @@
       switch (element.id) {
         case `effect-none`:
           imgPreview.className = `img-upload__preview`;
-          getFilterPinUp(element.id);
           break;
         case `effect-chrome`:
           imgPreview.classList.add(`effects__preview--chrome`);
-          getFilterPinUp(element.id);
           break;
         case `effect-sepia`:
           imgPreview.classList.add(`effects__preview--sepia`);
-          getFilterPinUp(element.id);
           break;
         case `effect-marvin`:
           imgPreview.classList.add(`effects__preview--marvin`);
-          getFilterPinUp(element.id);
           break;
         case `effect-phobos`:
           imgPreview.classList.add(`effects__preview--phobos`);
-          getFilterPinUp(element.id);
           break;
         case `effect-heat`:
           imgPreview.classList.add(`effects__preview--heat`);
-          getFilterPinUp(element.id);
           break;
       }
     });
   });
 
   // Функция получает число от 1 до 100 и возвращает число от 1 до 3
-  const getEffectValue = (value) => {
-    let ratio;
-    switch (true) {
-      case (value <= 33):
-        ratio = 1;
-        break;
-      case (value >= 66):
-        ratio = 3;
-        break;
-      default:
-        ratio = 2;
-    }
-    return ratio;
-  };
+  // const getEffectValue = (value) => {
+  //   let ratio;
+  //   switch (true) {
+  //     case (value <= 33):
+  //       ratio = 1;
+  //       break;
+  //     case (value >= 66):
+  //       ratio = 3;
+  //       break;
+  //     default:
+  //       ratio = 2;
+  //   }
+  //   return ratio;
+  // };
 
   const inputHashtag = document.querySelector(`.text__hashtags`);
   const inputComment = document.querySelector(`.text__description`);
