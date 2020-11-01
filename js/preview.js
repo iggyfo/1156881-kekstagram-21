@@ -1,58 +1,112 @@
 'use strict';
-// отрисовка увеличенного изображения
+// показывет загруженное изображение и накладывает эфекты
 (() => {
-  const CLASS_HIDDEN = `hidden`;
-  const AVATAR_SIZE = 35;
-  const bigPicture = document.querySelector(`.big-picture`);
-  const photo = document.querySelector(`.big-picture img`);
-  const likesCount = bigPicture.querySelector(`.likes-count`);
-  const commentsCount = bigPicture.querySelector(`.comments-count`);
-  const socialComments = bigPicture.querySelector(`.social__comments`);
-  const socialCaption = bigPicture.querySelector(`.social__caption`);
-  const socialCommentCount = bigPicture.querySelector(`.social__comment-count`);
-  const commentsLoader = bigPicture.querySelector(`.comments-loader`);
+  // Открываем и закрываем модальное окно
+  const uploadOverlay = document.querySelector(`.img-upload__overlay`);
 
-  // Функция создения нового коментария
-  const createComments = (comments) => {
-    comments.forEach((element) => {
-      const fragment = document.createDocumentFragment();
-      const li = document.createElement(`li`);
-      li.classList.add(`social__comment`);
-
-      const img = document.createElement(`img`);
-      img.classList.add(`social__picture`);
-      img.src = element.avatar;
-      img.alt = element.name;
-      img.width = AVATAR_SIZE;
-      img.height = AVATAR_SIZE;
-      li.appendChild(img);
-
-      const p = document.createElement(`p`);
-      p.classList.add(`social__text`);
-      p.textContent = element.message;
-      li.appendChild(p);
-      fragment.appendChild(li);
-      socialComments.appendChild(fragment);
-    });
+  const showModal = () => {
+    document.body.classList.add(`modal-open`);
+    uploadOverlay.classList.remove(`hidden`);
+    document.addEventListener(`keydown`, closeModal);
   };
 
-  // Функция отрисовки большого изображения
-  const renderBigPicture = (data) => {
-    photo.src = data.url;
-    likesCount.textContent = data.likes;
-    commentsCount.textContent = data.comments.length;
-    socialCaption.textContent = data.description;
-
-    socialCommentCount.classList.add(CLASS_HIDDEN);
-    commentsLoader.classList.add(CLASS_HIDDEN);
-    while (socialComments.firstChild) {
-      socialComments.removeChild(socialComments.firstChild);
+  const closeModal = (evt) => {
+    if (evt.key === `Escape` || evt.type === `click`) {
+      document.body.classList.remove(`modal-open`);
+      uploadOverlay.classList.add(`hidden`);
     }
-    createComments(data.comments);
+    document.removeEventListener(`keydown`, closeModal);
   };
+
+  // Изменяем маштаб изображения
+  const scaleControlSmaller = document.querySelector(`.scale__control--smaller`);
+  const scaleControlBigger = document.querySelector(`.scale__control--bigger`);
+  const scaleControlValue = document.querySelector(`.scale__control--value`);
+  const imgPreview = document.querySelector(`.img-upload__preview`);
+
+  let currentScaleValue = parseInt(scaleControlValue.value, 10);
+  imgPreview.style.transform = `scale(` + currentScaleValue / 100 + `)`;
+
+  scaleControlSmaller.addEventListener(`click`, () => {
+    if (currentScaleValue !== 0) {
+      currentScaleValue -= 25;
+      scaleControlValue.value = currentScaleValue + `%`;
+      imgPreview.style.transform = `scale(` + (currentScaleValue / 100) + `)`;
+    }
+  });
+
+  scaleControlBigger.addEventListener(`click`, () => {
+    if (currentScaleValue !== 100) {
+      currentScaleValue += 25;
+      scaleControlValue.value = currentScaleValue + `%`;
+      imgPreview.style.transform = `scale(` + (currentScaleValue / 100) + `)`;
+    }
+  });
+
+  // Добавляем эфекты
+  const effectsRadio = document.querySelectorAll(`.effects__radio`);
+
+  // const effectLevelValue = document.querySelector(`.effect-level__value`);
+
+  // // Функция устанавливающая эфекты добавляя стили картинке при отпускании пина
+  // const getFilterPinUp = (effect) => {
+  //   effectPin.addEventListener(`mouseup`, () => {
+  //     switch (effect) {
+  //       case `effect-none`:
+  //         imgPreview.style.filter = `none`;
+  //         break;
+  //       case `effect-chrome`:
+  //         imgPreview.style.filter = `grayscale(` + effectLevelValue.value / 100 + `)`;
+  //         break;
+  //       case `effect-sepia`:
+  //         imgPreview.style.filter = `sepia(` + effectLevelValue.value / 100 + `)`;
+  //         break;
+  //       case `effect-marvin`:
+  //         imgPreview.style.filter = `invert(` + effectLevelValue.value + `%)`;
+  //         break;
+  //       case `effect-phobos`:
+  //         imgPreview.style.filter = `blur(` + getEffectValue(effectLevelValue.value) + `px)`;
+  //         break;
+  //       case `effect-heat`:
+  //         imgPreview.style.filter = `brightness(` + getEffectValue(effectLevelValue.value) + `)`;
+  //         break;
+  //     }
+  //   });
+  // };
+
+  // Обработчик изменения типа накладываемого эфекта
+  effectsRadio.forEach((element) => {
+    element.addEventListener(`change`, () => {
+      // При изменении фильтра задаем картинке класс и стили оригинального изображения
+      imgPreview.className = `img-upload__preview`;
+      imgPreview.style.removeProperty(`filter`);
+
+      switch (element.id) {
+        case `effect-none`:
+          imgPreview.className = `img-upload__preview`;
+          break;
+        case `effect-chrome`:
+          imgPreview.classList.add(`effects__preview--chrome`);
+          break;
+        case `effect-sepia`:
+          imgPreview.classList.add(`effects__preview--sepia`);
+          break;
+        case `effect-marvin`:
+          imgPreview.classList.add(`effects__preview--marvin`);
+          break;
+        case `effect-phobos`:
+          imgPreview.classList.add(`effects__preview--phobos`);
+          break;
+        case `effect-heat`:
+          imgPreview.classList.add(`effects__preview--heat`);
+          break;
+      }
+    });
+  });
 
   window.preview = {
-    renderBigPicture
+    showModal,
+    closeModal
   };
 })();
 
