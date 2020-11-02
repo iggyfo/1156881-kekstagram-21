@@ -5,15 +5,15 @@
   const VALUE_OF_ONE_SHIFT = 4.53;
   const effectPin = document.querySelector(`.effect-level__pin`);
   const effectLeveldepth = document.querySelector(`.effect-level__depth`);
+  const effectLevelValue = document.querySelector(`.effect-level__value`);
 
-  const onMouseDown = () => {
+  const initSlider = () => {
     effectPin.addEventListener(`mousedown`, (downEvt) => {
       downEvt.preventDefault();
-
       // Получаем начальную координату Х
       let startCoords = downEvt.clientX;
 
-      const onMouseMove = (moveEvt) => {
+      const moveSlider = (moveEvt) => {
         moveEvt.preventDefault();
         // Вычисляем разницу между начальной и текущей координатой Х
         let shift = startCoords - moveEvt.clientX;
@@ -27,22 +27,23 @@
         } else if (pinValue <= 0) {
           pinValue = 0;
         }
-        effectPin.style.pinValue = pinValue + `%`;
+        effectPin.style.left = pinValue + `%`;
         effectLeveldepth.style.width = pinValue + `%`;
+        effectLevelValue.value = Math.round(pinValue);
       };
 
-      const onMouseUp = (upEvt) => {
+      const closeSlider = (upEvt) => {
         upEvt.preventDefault();
 
-        document.removeEventListener(`mousemove`, onMouseMove);
-        document.removeEventListener(`mouseup`, onMouseUp);
+        document.removeEventListener(`mousemove`, moveSlider);
+        document.removeEventListener(`mouseup`, closeSlider);
       };
-      document.addEventListener(`mousemove`, onMouseMove);
-      document.addEventListener(`mouseup`, onMouseUp);
+      document.addEventListener(`mousemove`, moveSlider);
+      document.addEventListener(`mouseup`, closeSlider);
     });
   };
 
   window.slider = {
-    onMouseDown
+    initSlider
   };
 })();
