@@ -46,34 +46,6 @@
   // Добавляем эфекты
   const effectsRadio = document.querySelectorAll(`.effects__radio`);
 
-  const effectLevelValue = document.querySelector(`.effect-level__value`);
-
-  // Функция устанавливающая эфекты добавляя стили картинке при отпускании пина
-  const getFilterPinUp = (effect) => {
-    effectPin.addEventListener(`mouseup`, () => {
-      switch (effect) {
-        case `effect-none`:
-          imgPreview.style.filter = `none`;
-          break;
-        case `effect-chrome`:
-          imgPreview.style.filter = `grayscale(` + effectLevelValue.value / 100 + `)`;
-          break;
-        case `effect-sepia`:
-          imgPreview.style.filter = `sepia(` + effectLevelValue.value / 100 + `)`;
-          break;
-        case `effect-marvin`:
-          imgPreview.style.filter = `invert(` + effectLevelValue.value + `%)`;
-          break;
-        case `effect-phobos`:
-          imgPreview.style.filter = `blur(` + getEffectValue(effectLevelValue.value) + `px)`;
-          break;
-        case `effect-heat`:
-          imgPreview.style.filter = `brightness(` + getEffectValue(effectLevelValue.value) + `)`;
-          break;
-      }
-    });
-  };
-
   // Обработчик изменения типа накладываемого эфекта
   effectsRadio.forEach((element) => {
     element.addEventListener(`change`, () => {
