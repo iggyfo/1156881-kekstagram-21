@@ -17,6 +17,7 @@
   const createComments = (comments) => {
     const fragment = document.createDocumentFragment();
     comments.forEach((element) => {
+
       const li = document.createElement(`li`);
       li.classList.add(`social__comment`);
 
@@ -35,6 +36,7 @@
       fragment.appendChild(li);
     });
     socialComments.appendChild(fragment);
+
   };
 
   // Функция отрисовки большого изображения

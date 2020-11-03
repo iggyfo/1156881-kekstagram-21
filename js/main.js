@@ -26,7 +26,6 @@
   // верификация формы
   inputHashtag.addEventListener(`input`, window.form.validateHashtags);
   inputComment.addEventListener(`input`, window.form.validateComment);
-
   window.slider.initSlider();
 })();
 
