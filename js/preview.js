@@ -3,6 +3,7 @@
 (() => {
   // Открываем и закрываем модальное окно
   const uploadOverlay = document.querySelector(`.img-upload__overlay`);
+  const START_PIN_POSITION = 100;
 
   const showModal = () => {
     document.body.classList.add(`modal-open`);
@@ -63,18 +64,23 @@
           break;
         case `effect-chrome`:
           imgPreview.classList.add(`effects__preview--chrome`);
+          window.slider.getPinPosition(START_PIN_POSITION);
           break;
         case `effect-sepia`:
           imgPreview.classList.add(`effects__preview--sepia`);
+          window.slider.getPinPosition(START_PIN_POSITION);
           break;
         case `effect-marvin`:
           imgPreview.classList.add(`effects__preview--marvin`);
+          window.slider.getPinPosition(START_PIN_POSITION);
           break;
         case `effect-phobos`:
           imgPreview.classList.add(`effects__preview--phobos`);
+          window.slider.getPinPosition(START_PIN_POSITION);
           break;
         case `effect-heat`:
           imgPreview.classList.add(`effects__preview--heat`);
+          window.slider.getPinPosition(START_PIN_POSITION);
           break;
       }
     });
