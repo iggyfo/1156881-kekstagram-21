@@ -3,18 +3,7 @@
 (() => {
 // Функция получает число от 1 до 100 и возвращает число от 1 до 3
   const getEffectValue = (value) => {
-    let ratio;
-    switch (true) {
-      case (value <= 33):
-        ratio = 1;
-        break;
-      case (value >= 66):
-        ratio = 3;
-        break;
-      default:
-        ratio = 2;
-    }
-    return ratio;
+    return 3 / 100 * value;
   };
 
   // Функция поиска дубликатов в строке

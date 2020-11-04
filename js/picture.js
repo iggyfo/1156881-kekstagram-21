@@ -15,8 +15,9 @@
 
   // Функция создения нового коментария
   const createComments = (comments) => {
+    const fragment = document.createDocumentFragment();
     comments.forEach((element) => {
-      const fragment = document.createDocumentFragment();
+
       const li = document.createElement(`li`);
       li.classList.add(`social__comment`);
 
@@ -33,8 +34,9 @@
       p.textContent = element.message;
       li.appendChild(p);
       fragment.appendChild(li);
-      socialComments.appendChild(fragment);
     });
+    socialComments.appendChild(fragment);
+
   };
 
   // Функция отрисовки большого изображения

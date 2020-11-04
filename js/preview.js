@@ -3,10 +3,12 @@
 (() => {
   // Открываем и закрываем модальное окно
   const uploadOverlay = document.querySelector(`.img-upload__overlay`);
+  const START_PIN_POSITION = 100;
 
   const showModal = () => {
     document.body.classList.add(`modal-open`);
     uploadOverlay.classList.remove(`hidden`);
+    slider.classList.add(`hidden`);
     document.addEventListener(`keydown`, closeModal);
   };
 
@@ -23,6 +25,7 @@
   const scaleControlBigger = document.querySelector(`.scale__control--bigger`);
   const scaleControlValue = document.querySelector(`.scale__control--value`);
   const imgPreview = document.querySelector(`.img-upload__preview`);
+  const slider = document.querySelector(`.img-upload__effect-level`);
 
   let currentScaleValue = parseInt(scaleControlValue.value, 10);
   imgPreview.style.transform = `scale(` + currentScaleValue / 100 + `)`;
@@ -46,59 +49,38 @@
   // Добавляем эфекты
   const effectsRadio = document.querySelectorAll(`.effects__radio`);
 
-  // const effectLevelValue = document.querySelector(`.effect-level__value`);
-
-  // // Функция устанавливающая эфекты добавляя стили картинке при отпускании пина
-  // const getFilterPinUp = (effect) => {
-  //   effectPin.addEventListener(`mouseup`, () => {
-  //     switch (effect) {
-  //       case `effect-none`:
-  //         imgPreview.style.filter = `none`;
-  //         break;
-  //       case `effect-chrome`:
-  //         imgPreview.style.filter = `grayscale(` + effectLevelValue.value / 100 + `)`;
-  //         break;
-  //       case `effect-sepia`:
-  //         imgPreview.style.filter = `sepia(` + effectLevelValue.value / 100 + `)`;
-  //         break;
-  //       case `effect-marvin`:
-  //         imgPreview.style.filter = `invert(` + effectLevelValue.value + `%)`;
-  //         break;
-  //       case `effect-phobos`:
-  //         imgPreview.style.filter = `blur(` + getEffectValue(effectLevelValue.value) + `px)`;
-  //         break;
-  //       case `effect-heat`:
-  //         imgPreview.style.filter = `brightness(` + getEffectValue(effectLevelValue.value) + `)`;
-  //         break;
-  //     }
-  //   });
-  // };
-
   // Обработчик изменения типа накладываемого эфекта
   effectsRadio.forEach((element) => {
     element.addEventListener(`change`, () => {
       // При изменении фильтра задаем картинке класс и стили оригинального изображения
       imgPreview.className = `img-upload__preview`;
       imgPreview.style.removeProperty(`filter`);
+      slider.classList.remove(`hidden`);
 
       switch (element.id) {
         case `effect-none`:
+          slider.classList.add(`hidden`);
           imgPreview.className = `img-upload__preview`;
           break;
         case `effect-chrome`:
           imgPreview.classList.add(`effects__preview--chrome`);
+          window.slider.getPinPosition(START_PIN_POSITION);
           break;
         case `effect-sepia`:
           imgPreview.classList.add(`effects__preview--sepia`);
+          window.slider.getPinPosition(START_PIN_POSITION);
           break;
         case `effect-marvin`:
           imgPreview.classList.add(`effects__preview--marvin`);
+          window.slider.getPinPosition(START_PIN_POSITION);
           break;
         case `effect-phobos`:
           imgPreview.classList.add(`effects__preview--phobos`);
+          window.slider.getPinPosition(START_PIN_POSITION);
           break;
         case `effect-heat`:
           imgPreview.classList.add(`effects__preview--heat`);
+          window.slider.getPinPosition(START_PIN_POSITION);
           break;
       }
     });
