@@ -2,7 +2,7 @@
 // модуль работы с формой
 (() => {
   const form = document.querySelector(`.img-upload__form`);
-  const inputFile = form.querySelector(`#upload-file`)
+  const inputFile = form.querySelector(`#upload-file`);
   const effectNone = form.querySelector(`#effect-none`);
   const scaleControlValue = document.querySelector(`.scale__control--value`);
   const imgPreview = document.querySelector(`.img-upload__preview`);
