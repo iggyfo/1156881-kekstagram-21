@@ -13,7 +13,7 @@
   };
 
   const closeModal = (evt) => {
-    if (evt.key === `Escape` || evt.type === `click`) {
+    if (evt.key === `Escape` || evt.type === `click` || evt.type === `submit`) {
       document.body.classList.remove(`modal-open`);
       uploadOverlay.classList.add(`hidden`);
     }
