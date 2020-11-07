@@ -23,7 +23,7 @@
   };
 
   // Создает объект из шаблона
-  function renderPictures(data) {
+  const renderPictures = (data) => {
     for (let i = 0; i < data.length; i++) {
       const picture = pictureTemplate.cloneNode(true);
       const pictureImg = picture.querySelector(`img`);
@@ -34,7 +34,7 @@
       pictureLikes.textContent = data[i].likes;
       pictures.appendChild(picture);
     }
-  }
+  };
 
   window.gallery = {
     openBigPicture,
