@@ -2,6 +2,7 @@
 // модуль работы с формой
 (() => {
   const form = document.querySelector(`.img-upload__form`);
+  const inputFile = form.querySelector(`#upload-file`)
   const effectNone = form.querySelector(`#effect-none`);
   const scaleControlValue = document.querySelector(`.scale__control--value`);
   const imgPreview = document.querySelector(`.img-upload__preview`);
@@ -64,6 +65,7 @@
   // В случае успешной отправки утаноавливаем 100% маштаб, эффект сбрасывается на «Оригинал», поля ввода очищаются.
   const getCustomFormSettings = (evt) => {
     window.preview.closeModal(evt);
+    inputFile.value = ``;
     scaleControlValue.value = FULL_SCALE + `%`;
     imgPreview.style.transform = `scale(` + (FULL_SCALE / 100) + `)`;
     imgPreview.className = `img-upload__preview`;
