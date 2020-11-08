@@ -22,8 +22,8 @@
     }
   };
 
-  // Создает объект из шаблона
-  function renderPictures(data) {
+  // Создает объект из шаблона и добавляет в разметку
+  const renderPictures = (data) => {
     for (let i = 0; i < data.length; i++) {
       const picture = pictureTemplate.cloneNode(true);
       const pictureImg = picture.querySelector(`img`);
@@ -34,10 +34,26 @@
       pictureLikes.textContent = data[i].likes;
       pictures.appendChild(picture);
     }
-  }
+  };
+
+  // отрисовываю все объекты в виде миниатюр
+  const renderGallery = (data) => {
+    renderPictures(data);
+    const allPictures = document.querySelectorAll(`.picture`);
+    // добавляю обработчик на все миниатюры
+    allPictures.forEach((element, index) => {
+      element.addEventListener(`click`, () => {
+        // отрисовываю большое фото
+        window.picture.renderBigPicture(data[index]);
+        // открываю/закрываю большое фото
+        openBigPicture();
+      });
+    });
+  };
 
   window.gallery = {
     openBigPicture,
-    renderPictures
+    renderPictures,
+    renderGallery
   };
 })();

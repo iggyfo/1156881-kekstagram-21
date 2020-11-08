@@ -1,32 +1,25 @@
 'use strict';
 (() => {
-  // создаю 25 объектов
-  const NUM_OF_DATA = 25;
-  const pictureData = window.data.createData(NUM_OF_DATA);
   const uploadFile = document.querySelector(`#upload-file`);
   const uploadCancel = document.querySelector(`#upload-cancel`);
   const inputHashtag = document.querySelector(`.text__hashtags`);
   const inputComment = document.querySelector(`.text__description`);
+  const form = document.querySelector(`.img-upload__form`);
 
-  // отрисовываю все объекты в виде миниатюр
-  window.gallery.renderPictures(pictureData);
-  const allPictures = document.querySelectorAll(`.picture`);
-  // добавляю обработчик на все миниатюры
-  allPictures.forEach((element, index) => {
-    element.addEventListener(`click`, () => {
-      // отрисовываю большое фото
-      window.picture.renderBigPicture(pictureData[index]);
-      // открываю/закрываю большое фото
-      window.gallery.openBigPicture();
-    });
-  });
+  // Загружаем данные с сервера и отображаем галерею изображений
+  window.load.getDataFromServer(window.gallery.renderGallery);
+
   // отображение превью загруженного фото
   uploadFile.addEventListener(`change`, window.preview.showModal);
   uploadCancel.addEventListener(`click`, window.preview.closeModal);
+  // Инициализируем слайдер
+  window.slider.initSlider();
   // верификация формы
   inputHashtag.addEventListener(`input`, window.form.validateHashtags);
   inputComment.addEventListener(`input`, window.form.validateComment);
-  window.slider.initSlider();
+
+  // Отправка формы на сервер
+  form.addEventListener(`submit`, window.form.submitHandler);
 })();
 
 
