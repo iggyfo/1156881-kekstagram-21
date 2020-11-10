@@ -30,7 +30,6 @@
 
   const debounce = function (cb) {
     let lastTimeout = null;
-    debugger
     return function (...parameters) {
       if (lastTimeout) {
         window.clearTimeout(lastTimeout);

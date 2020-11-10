@@ -43,15 +43,15 @@
       switch (element.id) {
         case `filter-discussed`:
           window.utils.buttonToggle(evt, filterBtns, FILTER_BTN_ACTIVE_CLASS);
-          refreshGallery(getSortedData());
+          window.utils.debounce(refreshGallery(getSortedData()));
           break;
         case `filter-random`:
           window.utils.buttonToggle(evt, filterBtns, FILTER_BTN_ACTIVE_CLASS);
-          refreshGallery(getRandomData());
+          window.utils.debounce(refreshGallery(getRandomData()));
           break;
         case `filter-default`:
           window.utils.buttonToggle(evt, filterBtns, FILTER_BTN_ACTIVE_CLASS);
-          refreshGallery(primaryData);
+          window.utils.debounce(refreshGallery(primaryData));
           break;
       }
     });
