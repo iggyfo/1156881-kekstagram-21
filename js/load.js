@@ -30,6 +30,7 @@
     xhr.addEventListener(`load`, () => {
       if (xhr.status === 200) {
         onSuccess(xhr.response);
+        window.filter.getPrimaryData(xhr.response);
       } else {
         onError(`Статус ответа: ` + xhr.status + ` ` + xhr.statusText);
       }
@@ -41,7 +42,7 @@
     xhr.addEventListener(`timeout`, () => {
       onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
     });
-
+    xhr.timeout = 10000;
     xhr.send();
   };
 

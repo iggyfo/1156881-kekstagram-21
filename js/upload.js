@@ -22,7 +22,7 @@
     xhr.addEventListener(`error`, () => {
       errorUpload();
     });
-
+    xhr.timeout = 10000;
     xhr.send(data);
   };
   const closeSuccessMessage = (evt) => {

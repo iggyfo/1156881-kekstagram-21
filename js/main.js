@@ -6,6 +6,7 @@
   const inputComment = document.querySelector(`.text__description`);
   const form = document.querySelector(`.img-upload__form`);
 
+
   // Загружаем данные с сервера и отображаем галерею изображений
   window.load.getDataFromServer(window.gallery.renderGallery);
 
