@@ -4,7 +4,7 @@
   const URL = `https://21.javascript.pages.academy/kekstagram/data`;
 
   // Функция ошибки загрузки данных с сервера
-  const errorHandler = (errorMessage) => {
+  const onError = (errorMessage) => {
     const node = document.createElement(`div`);
     node.style = `position: absolute;
     z-index: 100;
@@ -31,15 +31,15 @@
       if (xhr.status === 200) {
         onSuccess(xhr.response);
       } else {
-        errorHandler(`Статус ответа: ` + xhr.status + ` ` + xhr.statusText);
+        onError(`Статус ответа: ` + xhr.status + ` ` + xhr.statusText);
       }
     });
 
     xhr.addEventListener(`error`, () => {
-      errorHandler(`Произошла ошибка соединения`);
+      onError(`Произошла ошибка соединения`);
     });
     xhr.addEventListener(`timeout`, () => {
-      errorHandler(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
+      onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
     });
 
     xhr.send();
