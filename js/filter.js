@@ -36,25 +36,25 @@
     }).slice(0, NUM_RANDOM_PHOTO);
   };
 
-  // const applyDebounce = window.utils.debounce((data) => {
-  //   refreshGallery(data);
-  // });
+  const applyDebounce = window.utils.debounce((data) => {
+    refreshGallery(data);
+  });
 
   filterBtns.forEach((element) => {
     element.addEventListener(`click`, (evt) => {
       window.utils.buttonToggle(evt, filterBtns, FILTER_BTN_ACTIVE_CLASS);
       switch (element.id) {
         case `filter-discussed`:
-          // applyDebounce(getSortedData());
-          refreshGallery(getSortedData());
+          applyDebounce(getSortedData());
+          // refreshGallery(getSortedData());
           break;
         case `filter-random`:
-          // applyDebounce(getRandomData);
-          refreshGallery(getRandomData);
+          applyDebounce(getRandomData());
+          // refreshGallery(getRandomData);
           break;
         default:
-          // applyDebounce(primaryData);
-          refreshGallery(primaryData);
+          applyDebounce(primaryData);
+          // refreshGallery(primaryData);
           break;
       }
     });

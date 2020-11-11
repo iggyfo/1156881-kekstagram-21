@@ -53,7 +53,6 @@
       socialComments.removeChild(socialComments.firstChild);
     }
 
-    renderComments = [];
     renderComments = data.comments.slice();
     if (renderComments.length > NUM_RENDER_COMMENTS) {
       createComments(renderComments.slice(0, NUM_RENDER_COMMENTS));

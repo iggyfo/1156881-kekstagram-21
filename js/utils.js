@@ -30,12 +30,12 @@
 
   const debounce = (cb) => {
     let lastTimeout = null;
-    return () => {
+    return (...parameters) => {
       if (lastTimeout) {
         clearTimeout(lastTimeout);
       }
       lastTimeout = setTimeout(() => {
-        cb();
+        cb(...parameters);
       }, DEBOUNCE_INTERVAL);
     };
   };
