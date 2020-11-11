@@ -36,10 +36,9 @@
     }).slice(0, NUM_RANDOM_PHOTO);
   };
 
-  const applyDebounce = window.utils.debounce((data) => {
-      refreshGallery(data);
-    }
-  );
+  // const applyDebounce = window.utils.debounce((data) => {
+  //   refreshGallery(data);
+  // });
 
   filterBtns.forEach((element) => {
     element.addEventListener(`click`, (evt) => {
@@ -60,8 +59,6 @@
       }
     });
   });
-
-  
 
   window.filter = {
     getPrimaryData

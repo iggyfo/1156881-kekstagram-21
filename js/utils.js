@@ -28,14 +28,14 @@
   // Функция устранения дребезга
   const DEBOUNCE_INTERVAL = 500; // ms
 
-  window.debounce = (cb) => {
+  const debounce = (cb) => {
     let lastTimeout = null;
     return () => {
       if (lastTimeout) {
         clearTimeout(lastTimeout);
       }
       lastTimeout = setTimeout(() => {
-        cb(data);
+        cb();
       }, DEBOUNCE_INTERVAL);
     };
   };
