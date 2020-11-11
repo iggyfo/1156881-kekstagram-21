@@ -6,20 +6,12 @@
   const inputComment = document.querySelector(`.text__description`);
   const form = document.querySelector(`.img-upload__form`);
 
-
-  // Загружаем данные с сервера и отображаем галерею изображений
   window.load.getDataFromServer(window.gallery.renderGallery);
-
-  // отображение превью загруженного фото
   uploadFile.addEventListener(`change`, window.preview.showModal);
   uploadCancel.addEventListener(`click`, window.preview.closeModal);
-  // Инициализируем слайдер
   window.slider.initSlider();
-  // верификация формы
   inputHashtag.addEventListener(`input`, window.form.validateHashtags);
   inputComment.addEventListener(`input`, window.form.validateComment);
-
-  // Отправка формы на сервер
   form.addEventListener(`submit`, window.form.submitHandler);
 })();
 

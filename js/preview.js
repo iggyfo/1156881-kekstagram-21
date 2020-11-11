@@ -1,9 +1,12 @@
 'use strict';
-// показывет загруженное изображение и накладывает эфекты
 (() => {
-  // Открываем и закрываем модальное окно
-  const uploadOverlay = document.querySelector(`.img-upload__overlay`);
   const START_PIN_POSITION = 100;
+  const uploadOverlay = document.querySelector(`.img-upload__overlay`);
+  const scaleControlSmaller = document.querySelector(`.scale__control--smaller`);
+  const scaleControlBigger = document.querySelector(`.scale__control--bigger`);
+  const scaleControlValue = document.querySelector(`.scale__control--value`);
+  const imgPreview = document.querySelector(`.img-upload__preview`);
+  const slider = document.querySelector(`.img-upload__effect-level`);
 
   const showModal = () => {
     document.body.classList.add(`modal-open`);
@@ -19,13 +22,6 @@
     }
     document.removeEventListener(`keydown`, closeModal);
   };
-
-  // Изменяем маштаб изображения
-  const scaleControlSmaller = document.querySelector(`.scale__control--smaller`);
-  const scaleControlBigger = document.querySelector(`.scale__control--bigger`);
-  const scaleControlValue = document.querySelector(`.scale__control--value`);
-  const imgPreview = document.querySelector(`.img-upload__preview`);
-  const slider = document.querySelector(`.img-upload__effect-level`);
 
   let currentScaleValue = parseInt(scaleControlValue.value, 10);
   imgPreview.style.transform = `scale(` + currentScaleValue / 100 + `)`;
@@ -46,13 +42,9 @@
     }
   });
 
-  // Добавляем эфекты
   const effectsRadio = document.querySelectorAll(`.effects__radio`);
-
-  // Обработчик изменения типа накладываемого эфекта
   effectsRadio.forEach((element) => {
     element.addEventListener(`change`, () => {
-      // При изменении фильтра задаем картинке класс и стили оригинального изображения
       imgPreview.className = `img-upload__preview`;
       imgPreview.style.removeProperty(`filter`);
       slider.classList.remove(`hidden`);

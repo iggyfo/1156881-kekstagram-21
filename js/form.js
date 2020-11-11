@@ -1,6 +1,11 @@
 'use strict';
-// модуль работы с формой
 (() => {
+  const MAX_NUM_HASHTAGS = 5;
+  const MAX_NUM_COMMENTS = 140;
+  const MAX_NUM_CHAR = 20;
+  const FAIL_VALIDATE_STYLE = `border: 3px solid crimson`;
+  const FULL_SCALE = 100;
+  const regex = /^#[А-Яа-яA-Za-z0-9]{2,19}$/;
   const form = document.querySelector(`.img-upload__form`);
   const inputFile = form.querySelector(`#upload-file`);
   const effectNone = form.querySelector(`#effect-none`);
@@ -8,14 +13,7 @@
   const imgPreview = document.querySelector(`.img-upload__preview`);
   const inputHashtag = document.querySelector(`.text__hashtags`);
   const inputComment = document.querySelector(`.text__description`);
-  const regex = /^#[А-Яа-яA-Za-z0-9]{2,19}$/;
-  const MAX_NUM_HASHTAGS = 5;
-  const MAX_NUM_COMMENTS = 140;
-  const MAX_NUM_CHAR = 20;
-  const FAIL_VALIDATE_STYLE = `border: 3px solid crimson`;
-  const FULL_SCALE = 100;
 
-  // Добавляем обработчик на поле ввода хэштега
   const validateHashtags = () => {
     const hashTags = inputHashtag.value.split(` `);
     inputHashtag.setCustomValidity(``);
@@ -28,19 +26,16 @@
     }
 
     for (let tag of hashTags) {
-      // Проверяем на максимальное количество знаков
       if (tag.length > MAX_NUM_CHAR) {
         inputHashtag.setCustomValidity(`Максимальное количество знаков в хэштеге - не более 20 ` + tag);
         inputHashtag.style = FAIL_VALIDATE_STYLE;
         return;
       }
-      // Проверяем есть ли повторяющиеся хэштеги
       if (window.utils.getNumDublicate(hashTags, tag) > 1) {
         inputHashtag.setCustomValidity(`Хештеги не должны повторяться - удалите один из ` + tag);
         inputHashtag.style = FAIL_VALIDATE_STYLE;
         return;
       }
-      // Проверяем содержание хэштега
       if (!regex.test(tag)) {
         inputHashtag.setCustomValidity(`Хештег ` + tag + ` должен начинаться с # и состоять из букв/цифр`);
         inputHashtag.style = FAIL_VALIDATE_STYLE;
@@ -62,7 +57,6 @@
     evt.preventDefault();
   };
 
-  // В случае успешной отправки утаноавливаем 100% маштаб, эффект сбрасывается на «Оригинал», поля ввода очищаются.
   const getCustomFormSettings = (evt) => {
     window.preview.closeModal(evt);
     inputFile.value = ``;

@@ -3,7 +3,6 @@
 (() => {
   const URL = `https://21.javascript.pages.academy/kekstagram/data`;
 
-  // Функция ошибки загрузки данных с сервера
   const onError = (errorMessage) => {
     const node = document.createElement(`div`);
     node.style = `position: absolute;

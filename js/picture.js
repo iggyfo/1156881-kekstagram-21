@@ -15,11 +15,9 @@
   const commentsLoader = bigPicture.querySelector(`.comments-loader`);
   let renderComments = [];
 
-  // Функция создения нового коментария
   const createComments = (comments) => {
     const fragment = document.createDocumentFragment();
     comments.forEach((element) => {
-
       const li = document.createElement(`li`);
       li.classList.add(`social__comment`);
 
@@ -41,18 +39,15 @@
 
   };
 
-  // Функция отрисовки большого изображения
   const renderBigPicture = (data) => {
     photo.src = data.url;
     likesCount.textContent = data.likes;
     commentsCount.textContent = data.comments.length;
     socialCaption.textContent = data.description;
-
     socialCommentCount.classList.add(CLASS_HIDDEN);
     while (socialComments.firstChild) {
       socialComments.removeChild(socialComments.firstChild);
     }
-
     renderComments = data.comments.slice();
     if (renderComments.length > NUM_RENDER_COMMENTS) {
       createComments(renderComments.slice(0, NUM_RENDER_COMMENTS));
