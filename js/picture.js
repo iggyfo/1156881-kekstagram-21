@@ -60,21 +60,20 @@
       commentsLoader.classList.remove(CLASS_HIDDEN);
     } else {
       createComments(renderComments);
+      commentsLoader.classList.add(CLASS_HIDDEN);
+    }
+  };
+
+  commentsLoader.addEventListener(`click`, () => {
+    if (renderComments.length > NUM_RENDER_COMMENTS) {
+      createComments(renderComments.slice(0, NUM_RENDER_COMMENTS));
+      renderComments.splice(0, NUM_RENDER_COMMENTS);
+    } else {
+      createComments(renderComments);
       renderComments.splice();
       commentsLoader.classList.add(CLASS_HIDDEN);
     }
-
-    commentsLoader.addEventListener(`click`, () => {
-      if (renderComments.length > NUM_RENDER_COMMENTS) {
-        createComments(renderComments.slice(0, NUM_RENDER_COMMENTS));
-        renderComments.splice(0, NUM_RENDER_COMMENTS);
-      } else {
-        createComments(renderComments);
-        renderComments.splice();
-        commentsLoader.classList.add(CLASS_HIDDEN);
-      }
-    });
-  };
+  });
 
   window.picture = {
     renderBigPicture
