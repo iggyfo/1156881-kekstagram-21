@@ -2,8 +2,8 @@
 // показывет загруженное изображение и накладывает эфекты
 (() => {
   // Открываем и закрываем модальное окно
-  const uploadOverlay = document.querySelector(`.img-upload__overlay`);
   const START_PIN_POSITION = 100;
+  const uploadOverlay = document.querySelector(`.img-upload__overlay`);
 
   const showModal = () => {
     document.body.classList.add(`modal-open`);

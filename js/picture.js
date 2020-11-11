@@ -4,6 +4,7 @@
 (() => {
   const CLASS_HIDDEN = `hidden`;
   const AVATAR_SIZE = 35;
+  const NUM_RENDER_COMMENTS = 5;
   const bigPicture = document.querySelector(`.big-picture`);
   const photo = document.querySelector(`.big-picture img`);
   const likesCount = bigPicture.querySelector(`.likes-count`);
@@ -12,6 +13,7 @@
   const socialCaption = bigPicture.querySelector(`.social__caption`);
   const socialCommentCount = bigPicture.querySelector(`.social__comment-count`);
   const commentsLoader = bigPicture.querySelector(`.comments-loader`);
+  let renderComments = [];
 
   // Функция создения нового коментария
   const createComments = (comments) => {
@@ -47,11 +49,32 @@
     socialCaption.textContent = data.description;
 
     socialCommentCount.classList.add(CLASS_HIDDEN);
-    commentsLoader.classList.add(CLASS_HIDDEN);
     while (socialComments.firstChild) {
       socialComments.removeChild(socialComments.firstChild);
     }
-    createComments(data.comments);
+
+    renderComments = [];
+    renderComments = data.comments.slice();
+    if (renderComments.length > NUM_RENDER_COMMENTS) {
+      createComments(renderComments.slice(0, NUM_RENDER_COMMENTS));
+      renderComments.splice(0, NUM_RENDER_COMMENTS);
+      commentsLoader.classList.remove(CLASS_HIDDEN);
+    } else {
+      createComments(renderComments);
+      renderComments.splice();
+      commentsLoader.classList.add(CLASS_HIDDEN);
+    }
+
+    commentsLoader.addEventListener(`click`, () => {
+      if (renderComments.length > NUM_RENDER_COMMENTS) {
+        createComments(renderComments.slice(0, NUM_RENDER_COMMENTS));
+        renderComments.splice(0, NUM_RENDER_COMMENTS);
+      } else {
+        createComments(renderComments);
+        renderComments.splice();
+        commentsLoader.classList.add(CLASS_HIDDEN);
+      }
+    });
   };
 
   window.picture = {

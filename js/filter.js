@@ -1,9 +1,9 @@
 'use strict';
 (() => {
+  const NUM_RANDOM_PHOTO = 10;
   const imgFilter = document.querySelector(`.img-filters`);
   const filterBtns = document.querySelectorAll(`.img-filters__button`);
   const FILTER_BTN_ACTIVE_CLASS = `img-filters__button--active`;
-  const NUM_RANDOM_PHOTO = 10;
 
   let primaryData = [];
 
@@ -25,37 +25,43 @@
   };
 
   const getSortedData = () => {
-    const sortedData = primaryData.slice().sort((a, b) => {
+    return primaryData.slice().sort((a, b) => {
       return b.comments.length - a.comments.length;
     });
-    return sortedData;
   };
 
   const getRandomData = () => {
-    let randomData = primaryData.slice().sort(() => {
+    return primaryData.slice().sort(() => {
       return 0.5 - Math.random();
     }).slice(0, NUM_RANDOM_PHOTO);
-    return randomData;
   };
+
+  const applyDebounce = window.utils.debounce((data) => {
+      refreshGallery(data);
+    }
+  );
 
   filterBtns.forEach((element) => {
     element.addEventListener(`click`, (evt) => {
+      window.utils.buttonToggle(evt, filterBtns, FILTER_BTN_ACTIVE_CLASS);
       switch (element.id) {
         case `filter-discussed`:
-          window.utils.buttonToggle(evt, filterBtns, FILTER_BTN_ACTIVE_CLASS);
-          window.utils.debounce(refreshGallery(getSortedData()));
+          // applyDebounce(getSortedData());
+          refreshGallery(getSortedData());
           break;
         case `filter-random`:
-          window.utils.buttonToggle(evt, filterBtns, FILTER_BTN_ACTIVE_CLASS);
-          window.utils.debounce(refreshGallery(getRandomData()));
+          // applyDebounce(getRandomData);
+          refreshGallery(getRandomData);
           break;
-        case `filter-default`:
-          window.utils.buttonToggle(evt, filterBtns, FILTER_BTN_ACTIVE_CLASS);
-          window.utils.debounce(refreshGallery(primaryData));
+        default:
+          // applyDebounce(primaryData);
+          refreshGallery(primaryData);
           break;
       }
     });
   });
+
+  
 
   window.filter = {
     getPrimaryData
