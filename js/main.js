@@ -6,7 +6,12 @@
   const inputComment = document.querySelector(`.text__description`);
   const form = document.querySelector(`.img-upload__form`);
 
-  window.load.getDataFromServer(window.gallery.renderGallery);
+  const getData = (data) => {
+    window.gallery.renderGallery(data);
+    window.filter.getPrimaryData(data);
+  };
+  window.load.getDataFromServer(getData);
+
   uploadFile.addEventListener(`change`, window.preview.showModal);
   uploadCancel.addEventListener(`click`, window.preview.closeModal);
   window.slider.initSlider();

@@ -29,7 +29,6 @@
     xhr.addEventListener(`load`, () => {
       if (xhr.status === 200) {
         onSuccess(xhr.response);
-        window.filter.getPrimaryData(xhr.response);
       } else {
         onError(`Статус ответа: ` + xhr.status + ` ` + xhr.statusText);
       }
