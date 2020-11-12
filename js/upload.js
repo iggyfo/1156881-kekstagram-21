@@ -1,9 +1,9 @@
 'use strict';
 (() => {
+  const URL = `https://21.javascript.pages.academy/kekstagram`;
   const main = document.querySelector(`main`);
   const successTemplate = document.querySelector(`#success`).content.querySelector(`.success`);
   const errorTemplate = document.querySelector(`#error`).content.querySelector(`.error`);
-  const URL = `https://21.javascript.pages.academy/kekstagram`;
 
   const sendDataToServer = (data) => {
     const xhr = new XMLHttpRequest();
@@ -22,7 +22,7 @@
     xhr.addEventListener(`error`, () => {
       errorUpload();
     });
-
+    xhr.timeout = 10000;
     xhr.send(data);
   };
   const closeSuccessMessage = (evt) => {

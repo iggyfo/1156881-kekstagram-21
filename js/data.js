@@ -51,7 +51,7 @@
 
       // Создаем массив объектов с комментариями
       const comments = [];
-      const numberOfComments = getRandom(1, 6);
+      const numberOfComments = getRandom(1, 15);
 
       // Создаем массив коментов
       for (let j = 0; j < numberOfComments; j++) {

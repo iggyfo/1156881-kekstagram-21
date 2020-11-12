@@ -1,6 +1,11 @@
 'use strict';
 // модуль работы с формой
 (() => {
+  const MAX_NUM_HASHTAGS = 5;
+  const MAX_NUM_COMMENTS = 140;
+  const MAX_NUM_CHAR = 20;
+  const FAIL_VALIDATE_STYLE = `border: 3px solid crimson`;
+  const FULL_SCALE = 100;
   const form = document.querySelector(`.img-upload__form`);
   const inputFile = form.querySelector(`#upload-file`);
   const effectNone = form.querySelector(`#effect-none`);
@@ -9,11 +14,6 @@
   const inputHashtag = document.querySelector(`.text__hashtags`);
   const inputComment = document.querySelector(`.text__description`);
   const regex = /^#[А-Яа-яA-Za-z0-9]{2,19}$/;
-  const MAX_NUM_HASHTAGS = 5;
-  const MAX_NUM_COMMENTS = 140;
-  const MAX_NUM_CHAR = 20;
-  const FAIL_VALIDATE_STYLE = `border: 3px solid crimson`;
-  const FULL_SCALE = 100;
 
   // Добавляем обработчик на поле ввода хэштега
   const validateHashtags = () => {
