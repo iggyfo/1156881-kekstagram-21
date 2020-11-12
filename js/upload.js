@@ -8,7 +8,6 @@
   const sendDataToServer = (data) => {
     const xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
-
     xhr.open(`POST`, URL);
 
     xhr.addEventListener(`load`, () => {
@@ -25,6 +24,7 @@
     xhr.timeout = 10000;
     xhr.send(data);
   };
+
   const closeSuccessMessage = (evt) => {
     const successOverlay = main.querySelector(`.success`);
     const successCloseBtn = successOverlay.querySelector(`.success__button`);

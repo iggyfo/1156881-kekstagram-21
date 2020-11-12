@@ -3,7 +3,6 @@
 (() => {
   const URL = `https://21.javascript.pages.academy/kekstagram/data`;
 
-  // Функция ошибки загрузки данных с сервера
   const onError = (errorMessage) => {
     const node = document.createElement(`div`);
     node.style = `position: absolute;
@@ -30,7 +29,6 @@
     xhr.addEventListener(`load`, () => {
       if (xhr.status === 200) {
         onSuccess(xhr.response);
-        window.filter.getPrimaryData(xhr.response);
       } else {
         onError(`Статус ответа: ` + xhr.status + ` ` + xhr.statusText);
       }

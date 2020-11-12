@@ -4,10 +4,8 @@
   const imgFilter = document.querySelector(`.img-filters`);
   const filterBtns = document.querySelectorAll(`.img-filters__button`);
   const FILTER_BTN_ACTIVE_CLASS = `img-filters__button--active`;
-
   let primaryData = [];
 
-  // Функция получает данные от сервера. При получении оттображает блок фильтрации.
   const getPrimaryData = (dataFromServer) => {
     primaryData = dataFromServer;
     if (primaryData.length > 0) {
@@ -15,7 +13,6 @@
     }
   };
 
-  // Функция ищет все картинки отображенные в DOM, удаляет их, и рендерит новые на основе обработанного массива
   const refreshGallery = (secondaryData) => {
     const pictures = document.querySelectorAll(`.picture`);
     pictures.forEach((element) => {
@@ -46,15 +43,12 @@
       switch (element.id) {
         case `filter-discussed`:
           applyDebounce(getSortedData());
-          // refreshGallery(getSortedData());
           break;
         case `filter-random`:
           applyDebounce(getRandomData());
-          // refreshGallery(getRandomData);
           break;
         default:
           applyDebounce(primaryData);
-          // refreshGallery(primaryData);
           break;
       }
     });
