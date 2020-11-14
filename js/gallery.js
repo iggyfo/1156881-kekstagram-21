@@ -45,9 +45,27 @@
     });
   };
 
+  const onErrorDataLoad = (errorMessage) => {
+    const node = document.createElement(`div`);
+    node.style = `position: absolute;
+    z-index: 100;
+    margin: 0 30%;
+    background: grey;
+    top: 40vh;
+    font-size: 26px;
+    padding: 30px 10px 30px 10px;
+    border: 7px solid darkgrey;
+    border-radius: 10px;
+    min-width: 41%;
+    text-align: center;`;
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement(`afterbegin`, node);
+  };
+
   window.gallery = {
     openBigPicture,
     renderPictures,
-    renderGallery
+    renderGallery,
+    onErrorDataLoad
   };
 })();

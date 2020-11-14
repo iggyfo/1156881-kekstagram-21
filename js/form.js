@@ -6,6 +6,7 @@
   const FAIL_VALIDATE_STYLE = `border: 3px solid crimson`;
   const FULL_SCALE = 100;
   const regex = /^#[А-Яа-яA-Za-z0-9]{2,19}$/;
+  const main = document.querySelector(`main`);
   const form = document.querySelector(`.img-upload__form`);
   const inputFile = form.querySelector(`#upload-file`);
   const effectNone = form.querySelector(`#effect-none`);
@@ -13,6 +14,8 @@
   const imgPreview = document.querySelector(`.img-upload__preview`);
   const inputHashtag = document.querySelector(`.text__hashtags`);
   const inputComment = document.querySelector(`.text__description`);
+  const successTemplate = document.querySelector(`#success`).content.querySelector(`.success`);
+  const errorTemplate = document.querySelector(`#error`).content.querySelector(`.error`);
 
   const validateHashtags = () => {
     const hashTags = inputHashtag.value.split(` `);
@@ -36,7 +39,7 @@
         inputHashtag.style = FAIL_VALIDATE_STYLE;
         return;
       }
-      if (!regex.test(tag)) {
+      if (tag && !regex.test(tag)) {
         inputHashtag.setCustomValidity(`Хештег ` + tag + ` должен начинаться с # и состоять из букв/цифр`);
         inputHashtag.style = FAIL_VALIDATE_STYLE;
         return;
@@ -64,9 +67,45 @@
     effectNone.checked = true;
   };
 
+  const closeSuccessMessage = (evt) => {
+    const successOverlay = main.querySelector(`.success`);
+    const successCloseBtn = successOverlay.querySelector(`.success__button`);
+    if (evt.target === successOverlay || evt.target === successCloseBtn || evt.key === `Escape`) {
+      main.removeChild(main.lastChild);
+      document.removeEventListener(`keydown`, closeSuccessMessage);
+    }
+  };
+
+  const closeErrorMessage = (evt) => {
+    const errorOverlay = main.querySelector(`.error`);
+    const errorCloseButton = main.querySelector(`.error__button`);
+    if (evt.target === errorOverlay || evt.target === errorCloseButton || evt.key === `Escape`) {
+      main.removeChild(main.lastChild);
+      document.removeEventListener(`keydown`, closeErrorMessage);
+    }
+  };
+
+  const onSuccessUpload = () => {
+    const successNode = successTemplate.cloneNode(true);
+    main.appendChild(successNode);
+    const successOverlay = main.querySelector(`.success`);
+    successOverlay.addEventListener(`click`, closeSuccessMessage);
+    document.addEventListener(`keydown`, closeSuccessMessage);
+  };
+
+  const onErrorUpload = () => {
+    const errorNode = errorTemplate.cloneNode(true);
+    main.appendChild(errorNode);
+    const errorOverlay = main.querySelector(`.error`);
+    errorOverlay.addEventListener(`click`, closeErrorMessage);
+    document.addEventListener(`keydown`, closeErrorMessage);
+  };
+
   window.form = {
     validateHashtags,
     validateComment,
-    getCustomFormSettings
+    getCustomFormSettings,
+    onSuccessUpload,
+    onErrorUpload
   };
 })();
