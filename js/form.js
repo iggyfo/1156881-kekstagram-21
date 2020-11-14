@@ -52,11 +52,6 @@
     }
   };
 
-  const submitHandler = (evt) => {
-    window.upload.sendDataToServer(new FormData(form), getCustomFormSettings(evt));
-    evt.preventDefault();
-  };
-
   const getCustomFormSettings = (evt) => {
     window.preview.closeModal(evt);
     inputFile.value = ``;
@@ -72,7 +67,6 @@
   window.form = {
     validateHashtags,
     validateComment,
-    getCustomFormSettings,
-    submitHandler
+    getCustomFormSettings
   };
 })();

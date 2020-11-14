@@ -1,14 +1,14 @@
 'use strict';
 (() => {
   const effectPin = document.querySelector(`.effect-level__pin`);
-  const effectLeveldepth = document.querySelector(`.effect-level__depth`);
+  const effectLevelDepth = document.querySelector(`.effect-level__depth`);
   const effectLevelValue = document.querySelector(`.effect-level__value`);
   const imgPreview = document.querySelector(`.img-upload__preview`);
   const sliderWidth = document.querySelector(`.effect-level__line`);
 
   const getPinPosition = (value) => {
     effectPin.style.left = value + `%`;
-    effectLeveldepth.style.width = value + `%`;
+    effectLevelDepth.style.width = value + `%`;
     effectLevelValue.value = Math.round(value);
   };
 

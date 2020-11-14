@@ -19,6 +19,10 @@
     if (evt.key === `Escape` || evt.type === `click` || evt.type === `submit`) {
       document.body.classList.remove(`modal-open`);
       uploadOverlay.classList.add(`hidden`);
+      imgPreview.className = `img-upload__preview`;
+      imgPreview.style.removeProperty(`filter`);
+      imgPreview.style.transform = `scale(1)`;
+      currentScaleValue = 100;
     }
     document.removeEventListener(`keydown`, closeModal);
   };
@@ -27,7 +31,7 @@
   imgPreview.style.transform = `scale(` + currentScaleValue / 100 + `)`;
 
   scaleControlSmaller.addEventListener(`click`, () => {
-    if (currentScaleValue !== 0) {
+    if (currentScaleValue !== 25) {
       currentScaleValue -= 25;
       scaleControlValue.value = currentScaleValue + `%`;
       imgPreview.style.transform = `scale(` + (currentScaleValue / 100) + `)`;
