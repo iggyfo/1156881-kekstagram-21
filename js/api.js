@@ -1,12 +1,16 @@
 'use strict';
 
 (() => {
-  const apiOptions = {
-    LOAD_URL: `https://21.javascript.pages.academy/kekstagram/data`,
-    LOAD_METHOD: `GET`,
-    UPLOAD_URL: `https://21.javascript.pages.academy/kekstagram`,
-    UPLOAD_METHOD: `POST`,
-    TIMEOUT: 10000
+  const TIMEOUT = 10000; // ms
+
+  const Url = {
+    load: `https://21.javascript.pages.academy/kekstagram/data`,
+    upload: `https://21.javascript.pages.academy/kekstagram`
+  };
+
+  const Method = {
+    load: `GET`,
+    upload: `POST`,
   };
 
   const getApi = (url, method, onSuccess, onError) => {
@@ -29,17 +33,17 @@
       onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
     });
 
-    xhr.timeout = apiOptions.TIMEOUT;
+    xhr.timeout = TIMEOUT;
     return xhr;
   };
 
   const loadData = (onSuccess, onError) => {
-    const xhr = getApi(apiOptions.LOAD_URL, apiOptions.LOAD_METHOD, onSuccess, onError);
+    const xhr = getApi(Url.load, Method.load, onSuccess, onError);
     xhr.send();
   };
 
   const uploadData = (onSuccess, onError, data) => {
-    const xhr = getApi(apiOptions.UPLOAD_URL, apiOptions.UPLOAD_METHOD, onSuccess, onError);
+    const xhr = getApi(Url.upload, Method.upload, onSuccess, onError);
     xhr.send(data);
   };
 
