@@ -7,13 +7,15 @@ const FULL_SCALE = 100;
 const ESC = `Escape`;
 const regex = /^#[А-Яа-яA-Za-z0-9]{1,19}$/;
 const main = document.querySelector(`main`);
-const node = document.querySelector(`.img-upload__form`);
-const photoUploadInput = node.querySelector(`#upload-file`);
-const effectNone = node.querySelector(`#effect-none`);
-const scaleControlValue = document.querySelector(`.scale__control--value`);
-const imgPreview = document.querySelector(`.img-upload__preview`);
-const inputHashtag = document.querySelector(`.text__hashtags`);
-const inputComment = document.querySelector(`.text__description`);
+const photoUpload = document.querySelector(`.img-upload__form`);
+const photoUploadInput = photoUpload.querySelector(`#upload-file`);
+const effectNone = photoUpload.querySelector(`#effect-none`);
+const scaleControlValue = photoUpload.querySelector(`.scale__control--value`);
+const imgPreview = photoUpload.querySelector(`.img-upload__preview`);
+const photoPreview = photoUpload.querySelector(`.img-upload__preview img`);
+const photoEditForm = photoUpload.querySelector(`.img-upload__overlay`);
+const inputHashtag = photoUpload.querySelector(`.text__hashtags`);
+const inputComment = photoUpload.querySelector(`.text__description`);
 const successTemplate = document.querySelector(`#success`).content.querySelector(`.success`);
 const errorTemplate = document.querySelector(`#error`).content.querySelector(`.error`);
 
@@ -21,7 +23,9 @@ const reset = () => {
   inputHashtag.setCustomValidity(``);
   inputHashtag.style.border = `none`;
   inputComment.setCustomValidity(``);
+  photoPreview.src = ``;
 };
+
 
 const validateHashtags = () => {
   const inputHashTags = inputHashtag.value.split(` `);
@@ -74,6 +78,9 @@ const getCustomSettings = (evt) => {
   effectNone.checked = true;
 };
 
+inputHashtag.addEventListener(`input`, validateHashtags);
+inputComment.addEventListener(`input`, validateComment);
+
 const closeSuccessMessage = (evt) => {
   const successOverlay = main.querySelector(`.success`);
   const successCloseBtn = successOverlay.querySelector(`.success__button`);
@@ -109,11 +116,15 @@ const onErrorUpload = () => {
 };
 
 window.form = {
-  node,
+  photoUpload,
+  photoPreview,
+  photoEditForm,
+  photoUploadInput,
   validateHashtags,
   validateComment,
   getCustomSettings,
   onSuccessUpload,
   onErrorUpload,
+  imgPreview,
   reset
 };

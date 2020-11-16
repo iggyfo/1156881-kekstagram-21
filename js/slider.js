@@ -1,9 +1,8 @@
 'use strict';
-const effectPin = window.form.node.querySelector(`.effect-level__pin`);
-const effectLevelDepth = window.form.node.querySelector(`.effect-level__depth`);
-const effectLevelValue = window.form.node.querySelector(`.effect-level__value`);
-const imgPreview = window.form.node.querySelector(`.img-upload__preview`);
-const sliderWidth = window.form.node.querySelector(`.effect-level__line`);
+const effectPin = window.form.photoUpload.querySelector(`.effect-level__pin`);
+const effectLevelDepth = window.form.photoUpload.querySelector(`.effect-level__depth`);
+const effectLevelValue = window.form.photoUpload.querySelector(`.effect-level__value`);
+const sliderWidth = window.form.photoUpload.querySelector(`.effect-level__line`);
 
 const getPinPosition = (value) => {
   effectPin.style.left = `${value}%`;
@@ -33,22 +32,22 @@ const initSlider = () => {
         if (element.checked) {
           switch (element.id) {
             case `effect-none`:
-              imgPreview.style.filter = `none`;
+              window.form.imgPreview.style.filter = `none`;
               break;
             case `effect-chrome`:
-              imgPreview.style.filter = `grayscale(` + effectLevelValue.value / 100 + `)`;
+              window.form.imgPreview.style.filter = `grayscale(` + effectLevelValue.value / 100 + `)`;
               break;
             case `effect-sepia`:
-              imgPreview.style.filter = `sepia(` + effectLevelValue.value / 100 + `)`;
+              window.form.imgPreview.style.filter = `sepia(` + effectLevelValue.value / 100 + `)`;
               break;
             case `effect-marvin`:
-              imgPreview.style.filter = `invert(` + effectLevelValue.value + `%)`;
+              window.form.imgPreview.style.filter = `invert(` + effectLevelValue.value + `%)`;
               break;
             case `effect-phobos`:
-              imgPreview.style.filter = `blur(` + window.utils.getEffectValue(effectLevelValue.value) + `px)`;
+              window.form.imgPreview.style.filter = `blur(` + window.utils.getEffectValue(effectLevelValue.value) + `px)`;
               break;
             case `effect-heat`:
-              imgPreview.style.filter = `brightness(` + window.utils.getEffectValue(effectLevelValue.value) + `)`;
+              window.form.imgPreview.style.filter = `brightness(` + window.utils.getEffectValue(effectLevelValue.value) + `)`;
               break;
           }
         }
