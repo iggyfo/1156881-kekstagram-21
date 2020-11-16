@@ -14,6 +14,7 @@
   const socialCommentCount = bigPicture.querySelector(`.social__comment-count`);
   const commentsLoader = bigPicture.querySelector(`.comments-loader`);
   let renderComments = [];
+  let commentCount;
 
   const createComments = (comments) => {
     const fragment = document.createDocumentFragment();
@@ -44,29 +45,38 @@
     likesCount.textContent = data.likes;
     commentsCount.textContent = data.comments.length;
     socialCaption.textContent = data.description;
-    socialCommentCount.classList.add(CLASS_HIDDEN);
+    // socialCommentCount.classList.add(CLASS_HIDDEN);
     while (socialComments.firstChild) {
       socialComments.removeChild(socialComments.firstChild);
     }
+    commentCount = 0;
     renderComments = data.comments.slice();
     if (renderComments.length > NUM_RENDER_COMMENTS) {
       createComments(renderComments.slice(0, NUM_RENDER_COMMENTS));
       renderComments.splice(0, NUM_RENDER_COMMENTS);
       commentsLoader.classList.remove(CLASS_HIDDEN);
+      commentCount = NUM_RENDER_COMMENTS;
+
+      socialCommentCount.innerHTML = `${commentCount} из <span class='comments-count'>${data.comments.length}</span> комментариев`;
     } else {
       createComments(renderComments);
       commentsLoader.classList.add(CLASS_HIDDEN);
+
+      socialCommentCount.innerHTML = `${data.comments.length} из <span class='comments-count'>${data.comments.length}</span> комментариев`;
     }
   };
 
   commentsLoader.addEventListener(`click`, () => {
     if (renderComments.length > NUM_RENDER_COMMENTS) {
+      commentCount += NUM_RENDER_COMMENTS;
       createComments(renderComments.slice(0, NUM_RENDER_COMMENTS));
       renderComments.splice(0, NUM_RENDER_COMMENTS);
+      socialCommentCount.innerHTML = `${commentCount} из <span class='comments-count'>${commentsCount.textContent}</span> комментариев`;
     } else {
       createComments(renderComments);
       renderComments.splice();
       commentsLoader.classList.add(CLASS_HIDDEN);
+      socialCommentCount.innerHTML = `${commentsCount.textContent} из <span class='comments-count'>${commentsCount.textContent}</span> комментариев`;
     }
   });
 

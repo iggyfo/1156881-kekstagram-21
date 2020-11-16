@@ -1,6 +1,7 @@
 'use strict';
 (() => {
   const START_PIN_POSITION = 100;
+  const ESC = `Escape`;
   const uploadOverlay = document.querySelector(`.img-upload__overlay`);
   const scaleControlSmaller = document.querySelector(`.scale__control--smaller`);
   const scaleControlBigger = document.querySelector(`.scale__control--bigger`);
@@ -16,7 +17,7 @@
   };
 
   const closeModal = (evt) => {
-    if (evt.key === `Escape` || evt.type === `click` || evt.type === `submit`) {
+    if (evt.key === ESC || evt.type === `click` || evt.type === `submit`) {
       document.body.classList.remove(`modal-open`);
       uploadOverlay.classList.add(`hidden`);
       imgPreview.className = `img-upload__preview`;

@@ -5,6 +5,7 @@
   const MAX_NUM_CHAR = 20;
   const FAIL_VALIDATE_STYLE = `border: 3px solid crimson`;
   const FULL_SCALE = 100;
+  const ESC = `Escape`;
   const regex = /^#[А-Яа-яA-Za-z0-9]{2,19}$/;
   const main = document.querySelector(`main`);
   const form = document.querySelector(`.img-upload__form`);
@@ -70,7 +71,7 @@
   const closeSuccessMessage = (evt) => {
     const successOverlay = main.querySelector(`.success`);
     const successCloseBtn = successOverlay.querySelector(`.success__button`);
-    if (evt.target === successOverlay || evt.target === successCloseBtn || evt.key === `Escape`) {
+    if (evt.target === successOverlay || evt.target === successCloseBtn || evt.key === ESC) {
       main.removeChild(main.lastChild);
       document.removeEventListener(`keydown`, closeSuccessMessage);
     }
@@ -79,7 +80,7 @@
   const closeErrorMessage = (evt) => {
     const errorOverlay = main.querySelector(`.error`);
     const errorCloseButton = main.querySelector(`.error__button`);
-    if (evt.target === errorOverlay || evt.target === errorCloseButton || evt.key === `Escape`) {
+    if (evt.target === errorOverlay || evt.target === errorCloseButton || evt.key === ESC) {
       main.removeChild(main.lastChild);
       document.removeEventListener(`keydown`, closeErrorMessage);
     }

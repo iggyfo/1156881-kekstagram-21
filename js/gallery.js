@@ -1,5 +1,6 @@
 'use strict';
 (() => {
+  const ESC = `Escape`;
   const bigPicture = document.querySelector(`.big-picture`);
   const bigPictureClose = bigPicture.querySelector(`.big-picture__cancel`);
   const pictureTemplate = document.querySelector(`#picture`).content.querySelector(`.picture`);
@@ -13,7 +14,7 @@
   };
 
   const closeBigPicture = (evt) => {
-    if (evt.key === `Escape` || evt.type === `click`) {
+    if (evt.key === ESC || evt.type === `click`) {
       document.body.classList.remove(`modal-open`);
       bigPicture.classList.add(`hidden`);
       bigPictureClose.removeEventListener(`click`, closeBigPicture);

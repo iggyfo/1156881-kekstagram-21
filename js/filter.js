@@ -1,9 +1,9 @@
 'use strict';
 (() => {
   const NUM_RANDOM_PHOTO = 10;
+  const FILTER_BTN_ACTIVE_CLASS = `img-filters__button--active`;
   const imgFilter = document.querySelector(`.img-filters`);
   const filterBtns = document.querySelectorAll(`.img-filters__button`);
-  const FILTER_BTN_ACTIVE_CLASS = `img-filters__button--active`;
   let primaryData = [];
 
   const getPrimaryData = (dataFromServer) => {
