@@ -18,7 +18,7 @@
     pictures.forEach((element) => {
       element.remove();
     });
-    window.gallery.renderGallery(secondaryData);
+    window.gallery.renderAll(secondaryData);
   };
 
   const getSortedData = () => {

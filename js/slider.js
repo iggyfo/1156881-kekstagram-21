@@ -1,14 +1,14 @@
 'use strict';
 (() => {
-  const effectPin = document.querySelector(`.effect-level__pin`);
-  const effectLevelDepth = document.querySelector(`.effect-level__depth`);
-  const effectLevelValue = document.querySelector(`.effect-level__value`);
-  const imgPreview = document.querySelector(`.img-upload__preview`);
-  const sliderWidth = document.querySelector(`.effect-level__line`);
+  const effectPin = window.form.node.querySelector(`.effect-level__pin`);
+  const effectLevelDepth = window.form.node.querySelector(`.effect-level__depth`);
+  const effectLevelValue = window.form.node.querySelector(`.effect-level__value`);
+  const imgPreview = window.form.node.querySelector(`.img-upload__preview`);
+  const sliderWidth = window.form.node.querySelector(`.effect-level__line`);
 
   const getPinPosition = (value) => {
-    effectPin.style.left = value + `%`;
-    effectLevelDepth.style.width = value + `%`;
+    effectPin.style.left = `${value}%`;
+    effectLevelDepth.style.width = `${value}%`;
     effectLevelValue.value = Math.round(value);
   };
 

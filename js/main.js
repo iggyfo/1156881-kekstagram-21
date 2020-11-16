@@ -4,10 +4,9 @@
   const uploadCancel = document.querySelector(`#upload-cancel`);
   const inputHashtag = document.querySelector(`.text__hashtags`);
   const inputComment = document.querySelector(`.text__description`);
-  const form = document.querySelector(`.img-upload__form`);
 
   const onSuccessDataLoad = (data) => {
-    window.gallery.renderGallery(data);
+    window.gallery.renderAll(data);
     window.filter.getPrimaryData(data);
   };
 
@@ -18,10 +17,11 @@
   window.slider.initSlider();
   inputHashtag.addEventListener(`input`, window.form.validateHashtags);
   inputComment.addEventListener(`input`, window.form.validateComment);
-  form.addEventListener(`submit`, (evt) => {
-    window.api.uploadData(window.form.onSuccessUpload, window.form.onErrorUpload, new FormData(form), window.form.getCustomFormSettings(evt));
+  window.form.node.addEventListener(`submit`, (evt) => {
+    window.api.uploadData(window.form.onSuccessUpload, window.form.onErrorUpload, new FormData(window.form.node), window.form.getCustomSettings(evt));
     evt.preventDefault();
   });
+  window.form.node.addEventListener(`reset`, window.form.reset);
 })();
 
 

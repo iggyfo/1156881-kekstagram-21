@@ -6,11 +6,11 @@
   const FAIL_VALIDATE_STYLE = `border: 3px solid crimson`;
   const FULL_SCALE = 100;
   const ESC = `Escape`;
-  const regex = /^#[А-Яа-яA-Za-z0-9]{2,19}$/;
+  const regex = /^#[А-Яа-яA-Za-z0-9]{1,19}$/;
   const main = document.querySelector(`main`);
-  const form = document.querySelector(`.img-upload__form`);
-  const inputFile = form.querySelector(`#upload-file`);
-  const effectNone = form.querySelector(`#effect-none`);
+  const node = document.querySelector(`.img-upload__form`);
+  const inputFile = node.querySelector(`#upload-file`);
+  const effectNone = node.querySelector(`#effect-none`);
   const scaleControlValue = document.querySelector(`.scale__control--value`);
   const imgPreview = document.querySelector(`.img-upload__preview`);
   const inputHashtag = document.querySelector(`.text__hashtags`);
@@ -18,8 +18,15 @@
   const successTemplate = document.querySelector(`#success`).content.querySelector(`.success`);
   const errorTemplate = document.querySelector(`#error`).content.querySelector(`.error`);
 
+  const reset = () => {
+    inputHashtag.setCustomValidity(``);
+    inputHashtag.style.border = `none`;
+    inputComment.setCustomValidity(``);
+  };
+
   const validateHashtags = () => {
-    const hashTags = inputHashtag.value.split(` `);
+    const inputHashTags = inputHashtag.value.split(` `);
+    const hashTags = inputHashTags.filter((hashtag) => hashtag !== ``);
     inputHashtag.setCustomValidity(``);
     inputHashtag.style.border = `none`;
 
@@ -56,7 +63,7 @@
     }
   };
 
-  const getCustomFormSettings = (evt) => {
+  const getCustomSettings = (evt) => {
     window.preview.closeModal(evt);
     inputFile.value = ``;
     scaleControlValue.value = FULL_SCALE + `%`;
@@ -103,10 +110,12 @@
   };
 
   window.form = {
+    node,
     validateHashtags,
     validateComment,
-    getCustomFormSettings,
+    getCustomSettings,
     onSuccessUpload,
-    onErrorUpload
+    onErrorUpload,
+    reset
   };
 })();

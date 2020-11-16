@@ -2,12 +2,12 @@
 (() => {
   const START_PIN_POSITION = 100;
   const ESC = `Escape`;
-  const uploadOverlay = document.querySelector(`.img-upload__overlay`);
-  const scaleControlSmaller = document.querySelector(`.scale__control--smaller`);
-  const scaleControlBigger = document.querySelector(`.scale__control--bigger`);
-  const scaleControlValue = document.querySelector(`.scale__control--value`);
-  const imgPreview = document.querySelector(`.img-upload__preview`);
-  const slider = document.querySelector(`.img-upload__effect-level`);
+  const uploadOverlay = window.form.node.querySelector(`.img-upload__overlay`);
+  const scaleControlSmaller = window.form.node.querySelector(`.scale__control--smaller`);
+  const scaleControlBigger = window.form.node.querySelector(`.scale__control--bigger`);
+  const scaleControlValue = window.form.node.querySelector(`.scale__control--value`);
+  const imgPreview = window.form.node.querySelector(`.img-upload__preview`);
+  const slider = window.form.node.querySelector(`.img-upload__effect-level`);
 
   const showModal = () => {
     document.body.classList.add(`modal-open`);
@@ -28,22 +28,25 @@
     document.removeEventListener(`keydown`, closeModal);
   };
 
+  const setCurrentScaleValue = (value) => {
+    scaleControlValue.value = value + `%`;
+    imgPreview.style.transform = `scale(` + (value / 100) + `)`;
+  };
+
   let currentScaleValue = parseInt(scaleControlValue.value, 10);
   imgPreview.style.transform = `scale(` + currentScaleValue / 100 + `)`;
 
   scaleControlSmaller.addEventListener(`click`, () => {
     if (currentScaleValue !== 25) {
       currentScaleValue -= 25;
-      scaleControlValue.value = currentScaleValue + `%`;
-      imgPreview.style.transform = `scale(` + (currentScaleValue / 100) + `)`;
+      setCurrentScaleValue(currentScaleValue);
     }
   });
 
   scaleControlBigger.addEventListener(`click`, () => {
     if (currentScaleValue !== 100) {
       currentScaleValue += 25;
-      scaleControlValue.value = currentScaleValue + `%`;
-      imgPreview.style.transform = `scale(` + (currentScaleValue / 100) + `)`;
+      setCurrentScaleValue(currentScaleValue);
     }
   });
 

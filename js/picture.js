@@ -1,6 +1,4 @@
 'use strict';
-// Создает фотографию пользователя с комментариями
-
 (() => {
   const CLASS_HIDDEN = `hidden`;
   const AVATAR_SIZE = 35;
@@ -45,7 +43,6 @@
     likesCount.textContent = data.likes;
     commentsCount.textContent = data.comments.length;
     socialCaption.textContent = data.description;
-    // socialCommentCount.classList.add(CLASS_HIDDEN);
     while (socialComments.firstChild) {
       socialComments.removeChild(socialComments.firstChild);
     }

@@ -35,7 +35,7 @@
     }
   };
 
-  const renderGallery = (data) => {
+  const renderAll = (data) => {
     renderPictures(data);
     const allPictures = document.querySelectorAll(`.picture`);
     allPictures.forEach((element, index) => {
@@ -64,9 +64,7 @@
   };
 
   window.gallery = {
-    openBigPicture,
-    renderPictures,
-    renderGallery,
+    renderAll,
     onErrorDataLoad
   };
 })();
