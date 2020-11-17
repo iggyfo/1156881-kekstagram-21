@@ -39,7 +39,7 @@ const renderAll = (data) => {
   const allPictures = document.querySelectorAll(`.picture`);
   allPictures.forEach((element, index) => {
     element.addEventListener(`click`, () => {
-      window.picture.renderBigPicture(data[index]);
+      window.picture.renderPost(data[index]);
       openBigPicture();
     });
   });

@@ -37,7 +37,7 @@ const createComments = (comments) => {
 
 };
 
-const renderBigPicture = (data) => {
+const renderPost = (data) => {
   photo.src = data.url;
   likesCount.textContent = data.likes;
   commentsCount.textContent = data.comments.length;
@@ -77,5 +77,5 @@ commentsLoader.addEventListener(`click`, () => {
 });
 
 window.picture = {
-  renderBigPicture
+  renderPost
 };

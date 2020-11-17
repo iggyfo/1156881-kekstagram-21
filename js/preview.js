@@ -1,8 +1,10 @@
 'use strict';
 const START_PIN_POSITION = 100;
+const INIT_SCALE_VALUE = 100;
+const STEP_SCALE_VALUE = 25;
 const ESC = `Escape`;
 const uploadOverlay = window.form.photoUpload.querySelector(`.img-upload__overlay`);
-const photoUploadCancel = document.querySelector(`#upload-cancel`);
+const photoUploadCancel = window.form.photoUpload.querySelector(`#upload-cancel`);
 const scaleControlSmaller = window.form.photoUpload.querySelector(`.scale__control--smaller`);
 const scaleControlBigger = window.form.photoUpload.querySelector(`.scale__control--bigger`);
 const scaleControlValue = window.form.photoUpload.querySelector(`.scale__control--value`);
@@ -22,7 +24,7 @@ const closeModal = (evt) => {
     window.form.imgPreview.className = `img-upload__preview`;
     window.form.imgPreview.style.removeProperty(`filter`);
     window.form.imgPreview.style.transform = `scale(1)`;
-    currentScaleValue = 100;
+    currentScaleValue = INIT_SCALE_VALUE;
   }
   document.removeEventListener(`keydown`, closeModal);
 };
@@ -39,15 +41,15 @@ let currentScaleValue = parseInt(scaleControlValue.value, 10);
 window.form.imgPreview.style.transform = `scale(` + currentScaleValue / 100 + `)`;
 
 scaleControlSmaller.addEventListener(`click`, () => {
-  if (currentScaleValue !== 25) {
-    currentScaleValue -= 25;
+  if (currentScaleValue !== STEP_SCALE_VALUE) {
+    currentScaleValue -= STEP_SCALE_VALUE;
     setCurrentScaleValue(currentScaleValue);
   }
 });
 
 scaleControlBigger.addEventListener(`click`, () => {
-  if (currentScaleValue !== 100) {
-    currentScaleValue += 25;
+  if (currentScaleValue !== INIT_SCALE_VALUE) {
+    currentScaleValue += STEP_SCALE_VALUE;
     setCurrentScaleValue(currentScaleValue);
   }
 });
